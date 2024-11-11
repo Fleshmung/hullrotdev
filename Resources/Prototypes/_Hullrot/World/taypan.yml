@@ -1,0 +1,27 @@
+- type: worldgenConfig
+  id: Taypan
+  components:
+    - type: WorldController
+    - type: BiomeSelection
+      biomes:
+        - AsteroidsFallback
+        - Failsafe
+        - AsteroidsStandard
+    - type: WorldPlacement
+      prototype: Taypan
+
+- type: worldPlacement
+  id: Taypan
+  maps:
+    - Fland
+    - Cog
+
+- type: worldPlacementMap
+  id: Fland
+  mapPrototype: Fland
+  pos: 0, 0
+
+- type: worldPlacementMap
+  id: Cog
+  mapPrototype: Cog
+  pos: 4000, 4000

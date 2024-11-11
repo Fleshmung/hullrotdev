@@ -112,6 +112,8 @@ namespace Content.Client.Entry
             _prototypeManager.RegisterIgnore("playerConnectionWhitelist");
             _prototypeManager.RegisterIgnore("spaceBiome");
             _prototypeManager.RegisterIgnore("worldgenConfig");
+            _prototypeManager.RegisterIgnore("worldPlacement");
+            _prototypeManager.RegisterIgnore("worldPlacementMap");
             _prototypeManager.RegisterIgnore("gameRule");
             _prototypeManager.RegisterIgnore("worldSpell");
             _prototypeManager.RegisterIgnore("entitySpell");
