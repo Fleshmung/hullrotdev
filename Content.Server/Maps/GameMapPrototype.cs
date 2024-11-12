@@ -40,7 +40,8 @@ public sealed partial class GameMapPrototype : IPrototype
     [DataField(required: true)]
     public ResPath MapPath { get; private set; } = default!;
 
-    [DataField("stations", required: true)]
+    // Hullrot change: stations field not required
+    [DataField("stations")]
     private Dictionary<string, StationConfig> _stations = new();
 
     /// <summary>

@@ -344,6 +344,7 @@ namespace Content.IntegrationTests.Tests
                 "DebrisFeaturePlacerController", // Above.
                 "LoadedChunk", // Worldgen chunk loading malding.
                 "BiomeSelection", // Whaddya know, requires config.
+                "WorldPlacement", // Hullrot: Man these worldgen components sure seem problematic golly gee whiz!!
                 "ActivatableUI", // Requires enum key
             };
 

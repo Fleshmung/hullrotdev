@@ -24,7 +24,6 @@ public sealed partial class WorldPlacementSystem : EntitySystem
 
     private void OnInit(EntityUid uid, WorldPlacementComponent component, ComponentInit args)
     {
-        Logger.Error("Initializing world placement...");
         if (!_prototypeManager.TryIndex<WorldPlacementPrototype>(component.Prototype, out var placementProto))
         {
             _sawmill.Error("Failed to load world placement prototype " + component.Prototype);

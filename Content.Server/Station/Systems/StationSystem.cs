@@ -113,7 +113,8 @@ public sealed class StationSystem : EntitySystem
                 dict.GetOrNew(becomesStation.Id).Add(grid);
         }
 
-        if (!dict.Any())
+        // Hullrot change: We only care if the map is supposed to have stations in the first place
+        if (ev.GameMap.Stations.Count > 0 && !dict.Any())
         {
             // Oh jeez, no stations got loaded.
             // We'll yell about it, but the thing this used to do with creating a dummy is kinda pointless now.
