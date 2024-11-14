@@ -3,16 +3,19 @@ using Content.Server.Worldgen.Prototypes;
 using Content.Server.Worldgen.Systems;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization.Manager;
-
+using Robust.Shared.Console;
 
 namespace Content.Server._Hullrot.Worldgen;
 
 /// <summary>
 /// Handles <see cref="WorldZoneSetupComponent"/> and the placement of zones.
 /// </summary>
-public sealed class WorldZonesSystem : EntitySystem
+public sealed partial class WorldZonesSystem : EntitySystem
 {
     [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
+    [Dependency] private readonly IConsoleHost _console = default!;
+    [Dependency] private readonly SharedTransformSystem _xform = default!;
+    [Dependency] private readonly SharedMapSystem _map = default!;
     [Dependency] private readonly ISerializationManager _ser = default!;
 
     private ISawmill _sawmill = default!;
@@ -21,6 +24,7 @@ public sealed class WorldZonesSystem : EntitySystem
         base.Initialize();
         SubscribeLocalEvent<WorldZoneSetupComponent, ComponentStartup>(OnStartup);
         SubscribeLocalEvent<WorldZoneSetupComponent, WorldChunkAddedEvent>(OnWorldChunkAdded);
+        InitializeCommands();
     }
 
     private void OnStartup(EntityUid uid, WorldZoneSetupComponent component, ComponentStartup args)
@@ -78,7 +82,7 @@ public sealed class WorldZonesSystem : EntitySystem
     {
         return GetZoneProto(proto.DefaultZone);
         // // Any shape rotators in chat?
-        // // Let's find (1, 1 first)
+        // // Let's find (0, 0 first)
         // // Imagine a 2x1
         // // -2, -1, 1, 2
         // // It's the third position, one more than the inradius right?
