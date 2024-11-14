@@ -181,7 +181,6 @@ namespace Content.Server.GameTicking
             var gridUids = gridIds.ToList();
 
             RaiseLocalEvent(new PostGameMapLoad(map, targetMapId, gridUids, stationName));
-
             return gridUids;
         }
 
