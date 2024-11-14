@@ -2,11 +2,8 @@
   id: Taypan
   components:
     - type: WorldController
-    - type: BiomeSelection
-      biomes:
-        - AsteroidsFallback
-        - Failsafe
-        - AsteroidsStandard
+    - type: WorldZoneSetup
+      prototype: Taypan
     - type: WorldPlacement
       prototype: Taypan
 
@@ -15,6 +12,11 @@
   maps:
     - Fland
     - Cog
+
+- type: worldZoneSetup
+  id: Taypan
+  inradius: 8
+  defaultZone: Asteroids
 
 - type: worldPlacementMap
   id: Fland
@@ -25,3 +27,7 @@
   id: Cog
   mapPrototype: Cog
   pos: 4000, 4000
+
+- type: worldZone
+  id: Asteroids
+  biome: AsteroidsStandard

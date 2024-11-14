@@ -8,11 +8,12 @@ namespace Content.Server.Worldgen;
 /// </summary>
 public static class WorldGen
 {
+    /// HULLROT: Set to 1000 from 128
     /// <summary>
     ///     The size of each chunk (isn't that self-explanatory.)
     ///     Be careful about how small you make this.
     /// </summary>
-    public const int ChunkSize = 128;
+    public const int ChunkSize = 1000;
 
     /// <summary>
     ///     Converts world coordinates to chunk coordinates.

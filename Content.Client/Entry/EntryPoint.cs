@@ -114,6 +114,8 @@ namespace Content.Client.Entry
             _prototypeManager.RegisterIgnore("worldgenConfig");
             _prototypeManager.RegisterIgnore("worldPlacement");
             _prototypeManager.RegisterIgnore("worldPlacementMap");
+            _prototypeManager.RegisterIgnore("worldZone");
+            _prototypeManager.RegisterIgnore("worldZoneSetup");
             _prototypeManager.RegisterIgnore("gameRule");
             _prototypeManager.RegisterIgnore("worldSpell");
             _prototypeManager.RegisterIgnore("entitySpell");

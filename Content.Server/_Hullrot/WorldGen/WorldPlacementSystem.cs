@@ -1,4 +1,3 @@
-using System.Numerics;
 using Content.Server.GameTicking;
 using Content.Server.Maps;
 using Content.Server._Hullrot.Worldgen.Prototypes;
@@ -14,7 +13,6 @@ public sealed partial class WorldPlacementSystem : EntitySystem
 {
     [Dependency] private readonly GameTicker _gameTicker = default!;
     [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
-    [Dependency] private readonly SharedMapSystem _map = default!;
     private ISawmill _sawmill = default!;
     public override void Initialize()
     {
