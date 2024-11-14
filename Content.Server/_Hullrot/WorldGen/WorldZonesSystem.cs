@@ -1,9 +1,12 @@
+using System.Diagnostics.CodeAnalysis;
 using Content.Server._Hullrot.Worldgen.Prototypes;
 using Content.Server.Worldgen.Prototypes;
 using Content.Server.Worldgen.Systems;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization.Manager;
 using Robust.Shared.Console;
+using Robust.Shared.Maths;
+using System.Numerics;
 
 namespace Content.Server._Hullrot.Worldgen;
 
@@ -64,7 +67,7 @@ public sealed partial class WorldZonesSystem : EntitySystem
         if (component.ZoneArray == null)
             ApplyZone(GetZoneProto(setupProto.DefaultZone), args.Chunk);
 
-        ApplyZone(FetchZone(component, setupProto, args.Coords.X, args.Coords.Y), args.Chunk);
+        ApplyZone(FetchZone(component, GetZoneProto(setupProto.OobZone ?? setupProto.DefaultZone), args.Coords), args.Chunk);
     }
 
     private void ApplyZone(WorldZonePrototype zone, EntityUid chunk)
@@ -78,26 +81,34 @@ public sealed partial class WorldZonesSystem : EntitySystem
         biome.Apply(chunk, _ser, EntityManager);
     }
 
-    private WorldZonePrototype FetchZone(WorldZoneSetupComponent component, WorldZoneSetupPrototype proto, int x, int y)
+    private WorldZonePrototype FetchZone(WorldZoneSetupComponent component, WorldZonePrototype fallback, Vector2i chunkCoords)
     {
-        return GetZoneProto(proto.DefaultZone);
-        // // Any shape rotators in chat?
-        // // Let's find (0, 0 first)
-        // // Imagine a 2x1
-        // // -2, -1, 1, 2
-        // // It's the third position, one more than the inradius right?
-        // // Well, with a zero-indexed array
-        // var baseIndX = proto.Inradius;
+        if (component.ZoneArray != null && ChunkToArrayCoords(component.ZoneArray, chunkCoords, out var arrayCoords))
+        {
+            return component.ZoneArray[arrayCoords.X, arrayCoords.Y];
+        }
 
-        // // now a 1x2
-        // // 2
-        // // 1
-        // // -1
-        // // -2
-        // var baseIndY = proto.Inradius - 1;
+        return fallback;
+    }
 
-        // // Let's check if we're out of bounds
-        // if (baseIndX <)
+    private bool ChunkToArrayCoords(WorldZonePrototype[,] array, Vector2i coords, out Vector2i arrayCoords)
+    {
+        arrayCoords = Vector2i.Zero;
+
+        // These map to 0, 0 in chunk coords
+        var baseIndX = array.GetLength(0) / 2;
+        var baseIndY = array.GetLength(1) / 2 - 1;
+
+        var indX = baseIndX + coords.X;
+        var indY = baseIndY - coords.Y;
+
+        // Check if we're out of bounds
+        if (indX < 0 || indX > array.GetLength(0) - 1
+        || indY < 0 || indY > array.GetLength(1) - 1)
+            return false;
+
+        arrayCoords = new Vector2i(indX, indY);
+        return true;
     }
     private WorldZonePrototype GetZoneProto(string proto)
     {
