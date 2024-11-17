@@ -4,7 +4,7 @@ using Content.Server.Maps;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype;
 
-namespace Content.Server._Hullrot.Worldgen;
+namespace Content.Server._Hullrot.Worldgen.Prototypes;
 
 /// <summary>
 /// While biome selection is handled by <see cref="WorldgenConfigPrototype">

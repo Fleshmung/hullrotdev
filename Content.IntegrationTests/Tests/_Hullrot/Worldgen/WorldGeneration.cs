@@ -1,31 +1,17 @@
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+using System.Numerics;
 using Content.Server.GameTicking;
-using Content.Server.Maps;
-using Content.Server.Shuttles.Components;
-using Content.Server.Shuttles.Systems;
-using Content.Server.Spawners.Components;
 using Content.Server.Station.Components;
+using Content.Server.Station.Systems;
 using Content.Shared.CCVar;
-using Content.Shared.Roles;
-using Robust.Server.GameObjects;
 using Robust.Shared.Configuration;
-using Robust.Shared.ContentPack;
 using Robust.Shared.GameObjects;
-using Robust.Shared.Map;
-using Robust.Shared.Map.Components;
 using Robust.Shared.Prototypes;
-using Content.Shared.Station.Components;
-using FastAccessors;
-using Robust.Shared.Utility;
-using YamlDotNet.RepresentationModel;
-using Robust.Shared;
 using Content.Server.Worldgen.Prototypes;
 using Content.Server.Worldgen.Components;
 using Content.Server._Hullrot.Worldgen.Prototypes;
-using BenchmarkDotNet.Disassemblers;
-
+using Content.Server.Maps;
+using Robust.Shared.Map;
 
 namespace Content.IntegrationTests.Test._Hullrot.Worldgen;
 
@@ -72,11 +58,13 @@ public sealed class WorldgenTests
         await pair.RunTicksSync(10);
 
         List<(EntityUid uid, WorldControllerComponent controller)> controllers = new();
+        EntityUid mapUid = default!;
 
         // ensure we have one world controller
         var controllerQuery = entityManager.AllEntityQueryEnumerator<WorldControllerComponent>();
         while (controllerQuery.MoveNext(out var uid, out var controller))
         {
+            mapUid = uid;
             controllers.Add((uid, controller));
         }
 
@@ -86,11 +74,16 @@ public sealed class WorldgenTests
         Assert.That(entityManager.TryGetComponent<WorldPlacementComponent>(controllers[0].uid, out var placementComponent));
         Assert.That(protoMan.TryIndex<WorldPlacementPrototype>(placementComponent.Prototype, out var placementProto));
 
+        List<Vector2> coords = new();
+
         // ensure that it's trying to place valid maps
         int expectedStations = 0;
         foreach (var map in placementProto.Maps)
         {
-            Assert.That(protoMan.TryIndex<GameMapPrototype>(map, out var mapProto));
+            Assert.That(protoMan.TryIndex<WorldPlacementMapPrototype>(map, out var mapPlacementProto));
+            coords.Add(mapPlacementProto.Pos);
+
+            Assert.That(protoMan.TryIndex<GameMapPrototype>(mapPlacementProto.Map, out var mapProto));
 
             // we expect this map's stations to exist
             expectedStations += mapProto.Stations.Count;
@@ -105,6 +98,22 @@ public sealed class WorldgenTests
         }
 
         Assert.That(stations.Count, Is.EqualTo(expectedStations));
+
+        // ensure that each position we're spawning at is part of a grid
+        // also it seems like for either the spawn or resolve here we have to
+        // wrap it in these awaits to avoid threading errors
+        await server.WaitAssertion(() =>
+        {
+            var xformSys = entityManager.System<SharedTransformSystem>();
+            Assert.Multiple(() =>
+            {
+                foreach (var coord in coords)
+                {
+                    var banana = entityManager.SpawnEntity("TrashBananaPeel", new EntityCoordinates(mapUid, coord));
+                    Assert.That(xformSys.GetGrid(banana) != null);
+                }
+            });
+        });
 
         await pair.CleanReturnAsync();
     }

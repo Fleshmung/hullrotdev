@@ -16,6 +16,6 @@ public sealed partial class WorldZoneSetupComponent : Component
     /// </summary>
     public WorldZonePrototype[,]? ZoneArray;
 
-    [DataField("prototype", customTypeSerializer: typeof(PrototypeIdSerializer<WorldZoneSetupPrototype>))]
-    public string Prototype { get; private set; } = string.Empty;
+    [DataField("prototype", required: true, customTypeSerializer: typeof(PrototypeIdSerializer<WorldZoneSetupPrototype>))]
+    public string? Prototype { get; private set; }
 }

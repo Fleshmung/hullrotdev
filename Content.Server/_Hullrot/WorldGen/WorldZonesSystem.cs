@@ -32,6 +32,10 @@ public sealed partial class WorldZonesSystem : EntitySystem
 
     private void OnStartup(EntityUid uid, WorldZoneSetupComponent component, ComponentStartup args)
     {
+        // Since datafield is required this will probably only be true with e.g. tests adding all comps
+        if (component.Prototype == null)
+            return;
+
         if (!_prototypeManager.TryIndex<WorldZoneSetupPrototype>(component.Prototype, out var setupProto))
         {
             _sawmill.Error("Failed to index WorldZoneSetupPrototype " + component.Prototype);
@@ -57,7 +61,7 @@ public sealed partial class WorldZonesSystem : EntitySystem
 
     private void OnWorldChunkAdded(EntityUid uid, WorldZoneSetupComponent component, WorldChunkAddedEvent args)
     {
-        if (!_prototypeManager.TryIndex<WorldZoneSetupPrototype>(component.Prototype, out var setupProto))
+        if (component.Prototype == null || !_prototypeManager.TryIndex<WorldZoneSetupPrototype>(component.Prototype, out var setupProto))
         {
             _sawmill.Error("Failed to index WorldZoneSetupPrototype " + component.Prototype);
             return;
