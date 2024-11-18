@@ -3,6 +3,7 @@ using Content.Server.Worldgen.Components;
 using Content.Server.Administration;
 using Content.Shared.Administration;
 using Robust.Shared.Console;
+using Content.Server._Hullrot.Worldgen.Prototypes;
 
 namespace Content.Server._Hullrot.Worldgen;
 
@@ -25,12 +26,24 @@ public sealed partial class WorldZonesSystem
             return;
         }
 
-        if (!TryComp<WorldControllerComponent>(map, out var controller))
+        if (!HasComp<WorldControllerComponent>(map))
         {
             shell.WriteError("Your mapis not a WorldController.");
             return;
         }
 
-        shell.WriteLine("Your world chunk position is: " + WorldGen.WorldToChunkCoords(_xform.GetWorldPosition((EntityUid)shell.Player.AttachedEntity)).ToString());
+        var chunk = WorldGen.WorldToChunkCoords(_xform.GetWorldPosition((EntityUid)shell.Player.AttachedEntity));
+
+        shell.WriteLine("Your world chunk position is: " + chunk.ToString());
+
+        if (!TryComp<WorldZoneSetupComponent>(map, out var setup))
+            return;
+
+        if (setup.Prototype == null || !_prototypeManager.TryIndex<WorldZoneSetupPrototype>(setup.Prototype, out var proto))
+            return;
+
+        var curZone = FetchZone(setup, GetZoneProto(proto.OobZone ?? proto.DefaultZone), (Vector2i)chunk);
+
+        shell.WriteLine("Current zone proto is " + curZone.ID);
     }
 }
