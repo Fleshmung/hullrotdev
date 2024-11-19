@@ -21,7 +21,7 @@ public sealed partial class WorldZonePrototype : IPrototype
 
     /// <summary>
     /// The grid tiles occupied.
-    /// I'm sorry, This sohuld be on the setup but I don't feel like dealing with serialization isuses
+    /// I'm sorry, This should be on the setup but I don't feel like dealing with serialization isuses
     /// </summary>
     [DataField("tiles")]
     public List<Vector2i> Tiles = new();

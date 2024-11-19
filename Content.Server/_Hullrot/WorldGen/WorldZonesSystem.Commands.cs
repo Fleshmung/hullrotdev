@@ -42,7 +42,7 @@ public sealed partial class WorldZonesSystem
         if (setup.Prototype == null || !_prototypeManager.TryIndex<WorldZoneSetupPrototype>(setup.Prototype, out var proto))
             return;
 
-        var curZone = FetchZone(setup, GetZoneProto(proto.OobZone ?? proto.DefaultZone), (Vector2i)chunk);
+        var curZone = FetchZone(setup, GetZoneProto(proto.OobZone ?? proto.DefaultZone), chunk);
 
         shell.WriteLine("Current zone proto is " + curZone.ID);
     }

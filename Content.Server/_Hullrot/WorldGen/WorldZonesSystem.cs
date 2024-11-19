@@ -57,6 +57,27 @@ public sealed partial class WorldZonesSystem : EntitySystem
         for (int i = 0; i < component.ZoneArray.GetLength(0); i++)
             for (int k = 0; k < component.ZoneArray.GetLength(1); k++)
                 component.ZoneArray[i, k] = defaultZone;
+
+        // overwrite with zone protos
+        foreach (var zone in setupProto.Zones)
+        {
+            if (!_prototypeManager.TryIndex<WorldZonePrototype>(zone, out var zoneProto))
+            {
+                _sawmill.Error("Failed to index WorldZonePrototype " + zone);
+                continue;
+            }
+
+            foreach (var tile in zoneProto.Tiles)
+            {
+                if (!ChunkToArrayCoords(component.ZoneArray, tile, out var coords))
+                {
+                    _sawmill.Warning("Chunk coord " + tile + "in zone prototype " + zoneProto.ID + " is out of bounds");
+                    continue;
+                }
+
+                component.ZoneArray[coords.X, coords.Y] = zoneProto;
+            }
+        }
     }
 
     private void OnWorldChunkAdded(EntityUid uid, WorldZoneSetupComponent component, WorldChunkAddedEvent args)
@@ -83,6 +104,11 @@ public sealed partial class WorldZonesSystem : EntitySystem
         }
 
         biome.Apply(chunk, _ser, EntityManager);
+    }
+
+    private WorldZonePrototype FetchZone(WorldZoneSetupComponent component, WorldZonePrototype fallback, Vector2 chunkCoords)
+    {
+        return FetchZone(component, fallback, new Vector2i((int)Math.Floor(chunkCoords.X), (int)Math.Floor(chunkCoords.Y)));
     }
 
     private WorldZonePrototype FetchZone(WorldZoneSetupComponent component, WorldZonePrototype fallback, Vector2i chunkCoords)

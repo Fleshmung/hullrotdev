@@ -17,6 +17,8 @@
   id: Taypan
   inradius: 8
   defaultZone: Asteroids
+  zones:
+    - Debug00
 
 - type: worldPlacementMap
   id: Fland
@@ -31,3 +33,9 @@
 - type: worldZone
   id: Asteroids
   biome: AsteroidsStandard
+
+- type: worldZone
+  id: Debug00
+  biome: AsteroidsStandard
+  tiles:
+    - 0, 0
