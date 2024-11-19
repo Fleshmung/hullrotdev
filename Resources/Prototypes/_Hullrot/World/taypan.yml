@@ -45,3 +45,8 @@
   id: DebugAesthetics
   ambientMusic: Morgue
   parallax: OriginStation
+
+## TODO LIST:
+## 1) Client system to get array from server, track current position, apply parallax / ambient music appropriately. Server needs to send prototype IDs to client.
+## 2) Integration test needs to verify the parallaxes on a client since we cannot
+## 3) Reintroduce the text system when moving to a new biome
