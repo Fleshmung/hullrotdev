@@ -37,5 +37,11 @@
 - type: worldZone
   id: Debug00
   biome: AsteroidsStandard
+  aesthetics: DebugAesthetics
   tiles:
     - 0, 0
+
+- type: worldZoneAesthetics
+  id: DebugAesthetics
+  ambientMusic: Morgue
+  parallax: OriginStation

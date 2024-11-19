@@ -1,5 +1,6 @@
 using System.Numerics;
 using Content.Server.Worldgen.Prototypes;
+using Content.Shared._Hullrot.Worldgen.Prototypes;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype;
 
@@ -18,6 +19,9 @@ public sealed partial class WorldZonePrototype : IPrototype
 
     [DataField("biome", required: true, customTypeSerializer: typeof(PrototypeIdSerializer<BiomePrototype>))]
     public string Biome = default!;
+
+    [DataField("aesthetics", customTypeSerializer: typeof(PrototypeIdSerializer<WorldZoneAestheticsPrototype>))]
+    public string Aesthetics = default!;
 
     /// <summary>
     /// The grid tiles occupied.

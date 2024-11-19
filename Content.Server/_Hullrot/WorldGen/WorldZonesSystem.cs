@@ -1,11 +1,9 @@
-using System.Diagnostics.CodeAnalysis;
 using Content.Server._Hullrot.Worldgen.Prototypes;
 using Content.Server.Worldgen.Prototypes;
 using Content.Server.Worldgen.Systems;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization.Manager;
 using Robust.Shared.Console;
-using Robust.Shared.Maths;
 using System.Numerics;
 
 namespace Content.Server._Hullrot.Worldgen;
