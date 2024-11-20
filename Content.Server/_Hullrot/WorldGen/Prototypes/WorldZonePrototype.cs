@@ -21,7 +21,7 @@ public sealed partial class WorldZonePrototype : IPrototype
     public string Biome = default!;
 
     [DataField("aesthetics", customTypeSerializer: typeof(PrototypeIdSerializer<WorldZoneAestheticsPrototype>))]
-    public string Aesthetics = default!;
+    public string Aesthetics = "None";
 
     /// <summary>
     /// The grid tiles occupied.

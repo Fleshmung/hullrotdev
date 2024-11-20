@@ -5,6 +5,8 @@ using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization.Manager;
 using Robust.Shared.Console;
 using System.Numerics;
+using Content.Shared._Hullrot.Worldgen;
+using Content.Shared._Hullrot.Worldgen.Prototypes;
 
 namespace Content.Server._Hullrot.Worldgen;
 
@@ -25,6 +27,9 @@ public sealed partial class WorldZonesSystem : EntitySystem
         base.Initialize();
         SubscribeLocalEvent<WorldZoneSetupComponent, ComponentStartup>(OnStartup);
         SubscribeLocalEvent<WorldZoneSetupComponent, WorldChunkAddedEvent>(OnWorldChunkAdded);
+
+        SubscribeNetworkEvent<RequestMapZoneLayoutEvent>(OnRequestLayout);
+
         InitializeCommands();
     }
 
@@ -91,6 +96,44 @@ public sealed partial class WorldZonesSystem : EntitySystem
             ApplyZone(GetZoneProto(setupProto.DefaultZone), args.Chunk);
 
         ApplyZone(FetchZone(component, GetZoneProto(setupProto.OobZone ?? setupProto.DefaultZone), args.Coords), args.Chunk);
+    }
+
+    private void OnRequestLayout(RequestMapZoneLayoutEvent ev, EntitySessionEventArgs args)
+    {
+        if (!_map.TryGetMap(new Robust.Shared.Map.MapId(ev.MapID), out var map))
+        {
+            _sawmill.Error("Client " + args.SenderSession.Name + " requested invalid map id " + ev.MapID);
+            RaiseNetworkEvent(new GiveMapZoneLayoutEvent(ev.MapID, 0, 0, null), args.SenderSession);
+            return;
+        }
+
+        if (!TryComp<WorldZoneSetupComponent>(map, out var setup) || setup.ZoneArray == null)
+        {
+            RaiseNetworkEvent(new GiveMapZoneLayoutEvent(ev.MapID, 0, 0, null), args.SenderSession);
+            return;
+        }
+
+        var serverArray = setup.ZoneArray;
+
+        // Can't serialize so going joker mode
+        var clientArray = new List<(WorldZoneAestheticsPrototype, int, int)>();
+
+        for (int i = 0; i < serverArray.GetLength(0); i++)
+        {
+            for (int k = 0; k < serverArray.GetLength(1); k++)
+            {
+                var serverCell = serverArray[i, k];
+
+                if (!_prototypeManager.TryIndex<WorldZoneAestheticsPrototype>(serverCell.Aesthetics, out var aesth))
+                {
+                    _sawmill.Error("Trying to index invalid aesthetics prototype " + serverCell.Aesthetics);
+                    continue;
+                }
+
+                clientArray.Add((aesth, i, k));
+            }
+        }
+        RaiseNetworkEvent(new GiveMapZoneLayoutEvent(ev.MapID, serverArray.GetLength(0), serverArray.GetLength(1), clientArray), args.SenderSession);
     }
 
     private void ApplyZone(WorldZonePrototype zone, EntityUid chunk)
