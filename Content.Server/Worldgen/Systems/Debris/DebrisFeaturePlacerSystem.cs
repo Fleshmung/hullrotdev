@@ -3,6 +3,7 @@ using System.Numerics;
 using Content.Server.Worldgen.Components;
 using Content.Server.Worldgen.Components.Debris;
 using Content.Server.Worldgen.Tools;
+using Content.Shared._Hullrot.Worldgen;
 using JetBrains.Annotations;
 using Robust.Server.GameObjects;
 using Robust.Shared.Map;
@@ -169,7 +170,7 @@ public sealed class DebrisFeaturePlacerSystem : BaseWorldSystem
                 continue;
             }
 
-            var pointDensity = _noiseIndex.Evaluate(uid, densityChannel, WorldGen.WorldToChunkCoords(point));
+            var pointDensity = _noiseIndex.Evaluate(uid, densityChannel, HullrotWorldGen.WorldToChunkCoords(point));
             if (pointDensity == 0 && component.DensityClip || _random.Prob(component.RandomCancellationChance))
                 continue;
 
@@ -221,13 +222,13 @@ public sealed class DebrisFeaturePlacerSystem : BaseWorldSystem
     /// </summary>
     private List<Vector2> GeneratePointsInChunk(EntityUid chunk, float density, Vector2 coords, EntityUid map)
     {
-        var offs = (int) ((WorldGen.ChunkSize - WorldGen.ChunkSize / 8.0f) / 2.0f);
+        var offs = (int)((HullrotWorldGen.ChunkSize - HullrotWorldGen.ChunkSize / 8.0f) / 2.0f);
         var topLeft = new Vector2(-offs, -offs);
         var lowerRight = new Vector2(offs, offs);
         var enumerator = _sampler.SampleRectangle(topLeft, lowerRight, density);
         var debrisPoints = new List<Vector2>();
 
-        var realCenter = WorldGen.ChunkToWorldCoordsCentered(coords.Floored());
+        var realCenter = HullrotWorldGen.ChunkToWorldCoordsCentered(coords.Floored());
 
         while (enumerator.MoveNext(out var debrisPoint))
         {

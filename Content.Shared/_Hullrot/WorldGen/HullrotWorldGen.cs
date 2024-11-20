@@ -1,14 +1,13 @@
-﻿using System.Diagnostics.Contracts;
+using Content.Shared._Hullrot.Worldgen.Prototypes;
+using System.Diagnostics.Contracts;
 using System.Numerics;
+using Content.Shared._Hullrot.Worldgen;
+using Robust.Shared.Serialization;
 
-namespace Content.Server.Worldgen;
+namespace Content.Shared._Hullrot.Worldgen;
 
-/// <summary>
-///     Contains a few world-generation related constants and static functions.
-/// </summary>
-public static class WorldGen
+public static class HullrotWorldGen
 {
-    /// HULLROT: Set to 1000 from 128
     /// <summary>
     ///     The size of each chunk (isn't that self-explanatory.)
     ///     Be careful about how small you make this.
@@ -23,7 +22,7 @@ public static class WorldGen
     [Pure]
     public static Vector2i WorldToChunkCoords(Vector2i inp)
     {
-        return (inp * new Vector2(1.0f / ChunkSize, 1.0f / ChunkSize)).Floored();
+        return (inp * new Vector2(1.0f / HullrotWorldGen.ChunkSize, 1.0f / HullrotWorldGen.ChunkSize)).Floored();
     }
 
     /// <summary>
@@ -34,7 +33,7 @@ public static class WorldGen
     [Pure]
     public static Vector2 WorldToChunkCoords(Vector2 inp)
     {
-        return inp * new Vector2(1.0f / ChunkSize, 1.0f / ChunkSize);
+        return inp * new Vector2(1.0f / HullrotWorldGen.ChunkSize, 1.0f / HullrotWorldGen.ChunkSize);
     }
 
     /// <summary>
@@ -71,3 +70,31 @@ public static class WorldGen
     }
 }
 
+[Serializable, NetSerializable]
+public sealed class RequestMapZoneLayoutEvent : EntityEventArgs
+{
+    public readonly int MapID;
+
+    public RequestMapZoneLayoutEvent(int mapID)
+    {
+        MapID = mapID;
+    }
+}
+
+[Serializable, NetSerializable]
+public sealed class GiveMapZoneLayoutEvent : EntityEventArgs
+{
+    public readonly int MapID;
+    public readonly int X;
+    public readonly int Y;
+    //I'm joker mode
+    // System.NotSupportedException: Multi-dim arrays not supported: Content.Shared._Hullrot.Worldgen.Prototypes.WorldZoneAestheticsPrototype[,]
+    public readonly List<(WorldZoneAestheticsPrototype, int, int)>? Layout;
+    public GiveMapZoneLayoutEvent(int mapID, int x, int y, List<(WorldZoneAestheticsPrototype, int, int)>? layout)
+    {
+        MapID = mapID;
+        X = x;
+        Y = y;
+        Layout = layout;
+    }
+}

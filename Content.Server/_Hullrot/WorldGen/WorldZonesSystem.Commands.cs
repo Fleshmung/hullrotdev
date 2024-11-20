@@ -1,8 +1,8 @@
-using Content.Server.Worldgen;
 using Content.Server.Worldgen.Components;
 using Content.Server.Administration;
 using Content.Shared.Administration;
 using Robust.Shared.Console;
+using Content.Shared._Hullrot.Worldgen;
 using Content.Server._Hullrot.Worldgen.Prototypes;
 
 namespace Content.Server._Hullrot.Worldgen;
@@ -32,7 +32,7 @@ public sealed partial class WorldZonesSystem
             return;
         }
 
-        var chunk = WorldGen.WorldToChunkCoords(_xform.GetWorldPosition((EntityUid)shell.Player.AttachedEntity));
+        var chunk = HullrotWorldGen.WorldToChunkCoords(_xform.GetWorldPosition((EntityUid)shell.Player.AttachedEntity));
 
         shell.WriteLine("Your world chunk position is: " + chunk.ToString());
 

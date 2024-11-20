@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Content.Server.Worldgen.Components;
+using Content.Shared._Hullrot.Worldgen;
 using Content.Shared.Ghost;
 using Content.Shared.Mind.Components;
 using JetBrains.Annotations;
@@ -108,9 +109,9 @@ public sealed class WorldControllerSystem : EntitySystem
                 continue;
 
             var wc = _xformSys.GetWorldPosition(xform);
-            var coords = WorldGen.WorldToChunkCoords(wc);
+            var coords = HullrotWorldGen.WorldToChunkCoords(wc);
             var chunks = new GridPointsNearEnumerator(coords.Floored(),
-                (int) Math.Ceiling(worldLoader.Radius / (float) WorldGen.ChunkSize) + 1);
+                (int) Math.Ceiling(worldLoader.Radius / (float) HullrotWorldGen.ChunkSize) + 1);
 
             var set = chunksToLoad[map];
 
@@ -140,7 +141,7 @@ public sealed class WorldControllerSystem : EntitySystem
                 continue;
 
             var wc = _xformSys.GetWorldPosition(xform);
-            var coords = WorldGen.WorldToChunkCoords(wc);
+            var coords = HullrotWorldGen.WorldToChunkCoords(wc);
             var chunks = new GridPointsNearEnumerator(coords.Floored(), PlayerLoadRadius);
 
             var set = chunksToLoad[map];

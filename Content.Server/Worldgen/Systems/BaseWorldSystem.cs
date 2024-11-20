@@ -1,5 +1,6 @@
 using System.Numerics;
 using Content.Server.Worldgen.Components;
+using Content.Shared._Hullrot.Worldgen;
 using JetBrains.Annotations;
 
 namespace Content.Server.Worldgen.Systems;
@@ -26,7 +27,7 @@ public abstract class BaseWorldSystem : EntitySystem
         if (!Resolve(ent, ref xform))
             throw new Exception("Failed to resolve transform, somehow.");
 
-        return WorldGen.WorldToChunkCoords(_transformSystem.GetWorldPosition(xform)).Floored();
+        return HullrotWorldGen.WorldToChunkCoords(_transformSystem.GetWorldPosition(xform)).Floored();
     }
 
     /// <summary>
@@ -41,7 +42,7 @@ public abstract class BaseWorldSystem : EntitySystem
         if (!Resolve(ent, ref xform))
             throw new Exception("Failed to resolve transform, somehow.");
 
-        return WorldGen.WorldToChunkCoords(_transformSystem.GetWorldPosition(xform));
+        return HullrotWorldGen.WorldToChunkCoords(_transformSystem.GetWorldPosition(xform));
     }
 
     /// <summary>

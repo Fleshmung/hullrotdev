@@ -102,7 +102,7 @@ public sealed partial class WorldZoneAestheticsSystem : EntitySystem
     private Vector2i WorldToChunkCoords(Vector2 input)
     {
         // Same as the const in WorldGen.cs
-        var coords = input * new Vector2(1.0f / 1000f, 1.0f / 1000f);
+        var coords = input * new Vector2(1.0f / HullrotWorldGen.ChunkSize, 1.0f / HullrotWorldGen.ChunkSize);
         return new Vector2i((int)Math.Floor(coords.X), (int)Math.Floor(coords.Y));
     }
     private bool ChunkToArrayCoords(WorldZoneAestheticsPrototype[,] array, Vector2i coords, out Vector2i arrayCoords)
