@@ -47,6 +47,7 @@ public sealed class ParallaxSystem : SharedParallaxSystem
         base.Shutdown();
         _overlay.RemoveOverlay<ParallaxOverlay>();
     }
+
     private void OnAfterAutoHandleState(EntityUid uid, ParallaxComponent component, ref AfterAutoHandleStateEvent args)
     {
         if (!_parallax.IsLoaded(component.Parallax))
