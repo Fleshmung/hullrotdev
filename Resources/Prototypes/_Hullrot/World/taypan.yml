@@ -47,7 +47,7 @@
   parallax: OriginStation
 
 ## TODO LIST:
-## 1) Apply ambient music appropriately.
-## 2) Integration test needs to verify the parallaxes on a client since we cannot
-## 3) Reintroduce the text system when moving to a new biome
-## 4) Parallax needs to fade in
+## 1) Integration test needs to verify the parallaxes on a client since we cannot
+## 2) Reintroduce the text system when moving to a new biome
+## 3) Parallax needs to fade in
+## 4) Map visualization control

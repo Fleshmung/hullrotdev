@@ -1,4 +1,5 @@
 using System.Numerics;
+using Content.Client.Audio;
 using Content.Client.Parallax;
 using Content.Shared._Hullrot.Worldgen;
 using Content.Shared._Hullrot.Worldgen.Prototypes;
@@ -25,7 +26,7 @@ public sealed partial class WorldZoneAestheticsSystem : EntitySystem
     /// <summary>
     /// Current zone aesthetics we're in
     /// </summary>
-    private WorldZoneAestheticsPrototype _curAesth = default!;
+    public WorldZoneAestheticsPrototype CurAesth { get; private set; } = default!;
 
     /// <summary>
     /// Whether we sent a request to the server and haven't received a response yet
@@ -36,6 +37,7 @@ public sealed partial class WorldZoneAestheticsSystem : EntitySystem
     [Dependency] private readonly SharedTransformSystem _xform = default!;
     [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
     [Dependency] private readonly ParallaxSystem _parallaxSystem = default!;
+    [Dependency] private readonly ContentAudioSystem _contentAudioSystem = default!;
 
     public override void Update(float frameTime)
     {
@@ -63,18 +65,18 @@ public sealed partial class WorldZoneAestheticsSystem : EntitySystem
             return;
 
         var tileAesth = _curZoneMap[arrayCoords.X, arrayCoords.Y];
-        if (tileAesth != _curAesth)
+        if (tileAesth != CurAesth)
         {
-            _curAesth = tileAesth;
-        }
+            CurAesth = tileAesth;
+            _parallaxSystem.SetParallaxOverride(tileAesth.Parallax);
 
-        _parallaxSystem.SetParallaxOverride(tileAesth.Parallax);
+        }
     }
 
     public override void Initialize()
     {
         base.Initialize();
-        _curAesth = _prototypeManager.Index<WorldZoneAestheticsPrototype>("None");
+        CurAesth = _prototypeManager.Index<WorldZoneAestheticsPrototype>("None");
         SubscribeNetworkEvent<GiveMapZoneLayoutEvent>(OnLayoutReceived);
     }
 
