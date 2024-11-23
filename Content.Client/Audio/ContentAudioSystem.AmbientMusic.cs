@@ -172,7 +172,7 @@ public sealed partial class ContentAudioSystem
             isDone = !audioComp.Playing;
         }
 
-        if (_interruptable && _reset)
+        if (_interruptable || _reset)
         {
             var player = _player.LocalSession?.AttachedEntity;
 

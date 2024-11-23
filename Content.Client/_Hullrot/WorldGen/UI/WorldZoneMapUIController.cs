@@ -1,4 +1,3 @@
-using Content.Client.Options.UI;
 using JetBrains.Annotations;
 using Robust.Client.UserInterface.Controllers;
 using Robust.Shared.Console;

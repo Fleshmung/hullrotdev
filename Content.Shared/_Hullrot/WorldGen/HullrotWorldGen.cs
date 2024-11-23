@@ -1,7 +1,6 @@
 using Content.Shared._Hullrot.Worldgen.Prototypes;
 using System.Diagnostics.Contracts;
 using System.Numerics;
-using Content.Shared._Hullrot.Worldgen;
 using Robust.Shared.Serialization;
 
 namespace Content.Shared._Hullrot.Worldgen;
@@ -22,7 +21,7 @@ public static class HullrotWorldGen
     [Pure]
     public static Vector2i WorldToChunkCoords(Vector2i inp)
     {
-        return (inp * new Vector2(1.0f / HullrotWorldGen.ChunkSize, 1.0f / HullrotWorldGen.ChunkSize)).Floored();
+        return (inp * new Vector2(1.0f / ChunkSize, 1.0f / ChunkSize)).Floored();
     }
 
     /// <summary>
@@ -33,7 +32,7 @@ public static class HullrotWorldGen
     [Pure]
     public static Vector2 WorldToChunkCoords(Vector2 inp)
     {
-        return inp * new Vector2(1.0f / HullrotWorldGen.ChunkSize, 1.0f / HullrotWorldGen.ChunkSize);
+        return inp * new Vector2(1.0f / ChunkSize, 1.0f / ChunkSize);
     }
 
     /// <summary>

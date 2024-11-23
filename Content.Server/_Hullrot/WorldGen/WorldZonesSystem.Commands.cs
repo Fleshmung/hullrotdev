@@ -28,7 +28,7 @@ public sealed partial class WorldZonesSystem
 
         if (!HasComp<WorldControllerComponent>(map))
         {
-            shell.WriteError("Your mapis not a WorldController.");
+            shell.WriteError("Your map is not a WorldController.");
             return;
         }
 
