@@ -46,6 +46,4 @@
   ambientMusic: Morgue
   parallax: OriginStation
   name: zone-name-debug
-
-## TODO LIST:
-## 1) Map visualization control
+  icon: /Textures/Tiles/deprecated.png

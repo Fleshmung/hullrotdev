@@ -1,7 +1,9 @@
-using Robust.Client.UserInterface;
-using Content.Shared._Hullrot.Worldgen.Prototypes;
-using Robust.Client.Graphics;
 using System.Numerics;
+using Content.Shared._Hullrot.Worldgen.Prototypes;
+using Robust.Client.UserInterface;
+using Robust.Client.Graphics;
+using Robust.Client.GameObjects;
+using Robust.Shared.Utility;
 
 namespace Content.Client._Hullrot.WorldGen.UI;
 
@@ -12,11 +14,16 @@ public sealed class WorldZoneMapControl : Control
 {
     private const int ICON_SIZE = 32;
     private WorldZoneAestheticsPrototype[,] _zoneMap;
-    public WorldZoneMapControl(WorldZoneAestheticsPrototype[,] zoneMap)
+    private readonly IEntityManager _entityManager;
+    private readonly SpriteSystem _spriteSystem;
+    public WorldZoneMapControl(WorldZoneAestheticsPrototype[,] zoneMap, IEntityManager entityManager)
     {
         IoCManager.InjectDependencies(this);
 
         _zoneMap = zoneMap;
+        _entityManager = entityManager;
+        _spriteSystem = entityManager.System<SpriteSystem>();
+
     }
 
     protected override void Draw(DrawingHandleScreen handle)
@@ -28,6 +35,15 @@ public sealed class WorldZoneMapControl : Control
 
         var box = new UIBox2i(new Vector2i(0, 0), new Vector2i(x_length * ICON_SIZE, y_length * ICON_SIZE));
         handle.DrawRect(box, Color.FromHex("#424245"));
+
+        // draw tiles
+        for (int i = 0; i < _zoneMap.GetLength(0); i++)
+            for (int k = 0; k < _zoneMap.GetLength(1); k++)
+            {
+                SpriteSpecifier icon = _zoneMap[i, k].Icon;
+
+                handle.DrawTexture(_spriteSystem.Frame0(icon), new Vector2(1 + i * ICON_SIZE, 1 + k * ICON_SIZE), Color.White);
+            }
 
         // draw grid
         int x = 1;

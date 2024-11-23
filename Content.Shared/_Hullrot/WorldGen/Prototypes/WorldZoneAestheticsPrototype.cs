@@ -2,6 +2,7 @@ using Content.Shared.Audio;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization;
 using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype;
+using Robust.Shared.Utility;
 
 namespace Content.Shared._Hullrot.Worldgen.Prototypes;
 
@@ -24,4 +25,11 @@ public sealed partial class WorldZoneAestheticsPrototype : IPrototype
 
     [DataField]
     public string? Name;
+
+    /// <summary>
+    ///     Icon representing this action in the zone map.
+    /// </summary>
+    [DataField]
+    public SpriteSpecifier Icon = new SpriteSpecifier.Texture(new("Tiles/cropped_parallax.png"));
+
 }

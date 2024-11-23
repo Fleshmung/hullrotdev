@@ -28,7 +28,7 @@ public sealed partial class WorldZoneMapWindow : FancyWindow
             return;
         }
 
-        var control = new WorldZoneMapControl(map);
+        var control = new WorldZoneMapControl(map, _entMan);
         control.SetSize = new Vector2(map.GetLength(0) * 32 + 20, map.GetLength(1) * 32 + 20);
 
         MainScreen.AddChild(control);
