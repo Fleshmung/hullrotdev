@@ -100,16 +100,19 @@ public sealed partial class WorldZonesSystem : EntitySystem
 
     private void OnRequestLayout(RequestMapZoneLayoutEvent ev, EntitySessionEventArgs args)
     {
-        if (!_map.TryGetMap(new Robust.Shared.Map.MapId(ev.MapID), out var map))
+        // Often the case during e.g. tests
+        if (ev.MapID == null)
+            return;
+
+        if (!_map.TryGetMap(new Robust.Shared.Map.MapId(ev.MapID.Value), out var map))
         {
-            _sawmill.Error("Client " + args.SenderSession.Name + " requested invalid map id " + ev.MapID);
-            RaiseNetworkEvent(new GiveMapZoneLayoutEvent(ev.MapID, 0, 0, null), args.SenderSession);
+            RaiseNetworkEvent(new GiveMapZoneLayoutEvent(ev.MapID.Value, 0, 0, null), args.SenderSession);
             return;
         }
 
         if (!TryComp<WorldZoneSetupComponent>(map, out var setup) || setup.ZoneArray == null)
         {
-            RaiseNetworkEvent(new GiveMapZoneLayoutEvent(ev.MapID, 0, 0, null), args.SenderSession);
+            RaiseNetworkEvent(new GiveMapZoneLayoutEvent(ev.MapID.Value, 0, 0, null), args.SenderSession);
             return;
         }
 
@@ -133,7 +136,7 @@ public sealed partial class WorldZonesSystem : EntitySystem
                 clientArray.Add((aesth, i, k));
             }
         }
-        RaiseNetworkEvent(new GiveMapZoneLayoutEvent(ev.MapID, serverArray.GetLength(0), serverArray.GetLength(1), clientArray), args.SenderSession);
+        RaiseNetworkEvent(new GiveMapZoneLayoutEvent(ev.MapID.Value, serverArray.GetLength(0), serverArray.GetLength(1), clientArray), args.SenderSession);
     }
 
     private void ApplyZone(WorldZonePrototype zone, EntityUid chunk)

@@ -73,9 +73,9 @@ public static class HullrotWorldGen
 [Serializable, NetSerializable]
 public sealed class RequestMapZoneLayoutEvent : EntityEventArgs
 {
-    public readonly int MapID;
+    public readonly int? MapID;
 
-    public RequestMapZoneLayoutEvent(int mapID)
+    public RequestMapZoneLayoutEvent(int? mapID)
     {
         MapID = mapID;
     }
