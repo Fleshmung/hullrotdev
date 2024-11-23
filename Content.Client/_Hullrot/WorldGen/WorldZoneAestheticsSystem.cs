@@ -1,4 +1,5 @@
 using System.Numerics;
+using Content.Client._Hullrot.Text;
 using Content.Client.Audio;
 using Content.Client.Parallax;
 using Content.Shared._Hullrot.Worldgen;
@@ -37,7 +38,7 @@ public sealed partial class WorldZoneAestheticsSystem : EntitySystem
     [Dependency] private readonly SharedTransformSystem _xform = default!;
     [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
     [Dependency] private readonly ParallaxSystem _parallaxSystem = default!;
-    [Dependency] private readonly ContentAudioSystem _contentAudioSystem = default!;
+    [Dependency] private readonly CinematicTextSystem _cineText = default!;
 
     public override void Update(float frameTime)
     {
@@ -70,6 +71,8 @@ public sealed partial class WorldZoneAestheticsSystem : EntitySystem
             CurAesth = tileAesth;
             _parallaxSystem.SetParallaxOverride(tileAesth.Parallax);
 
+            if (tileAesth.Name != null)
+                _cineText.DrawText(Loc.GetString(tileAesth.Name));
         }
     }
 

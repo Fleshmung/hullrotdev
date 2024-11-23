@@ -45,9 +45,7 @@
   id: DebugAesthetics
   ambientMusic: Morgue
   parallax: OriginStation
+  name: zone-name-debug
 
 ## TODO LIST:
-## 1) Integration test needs to verify the parallaxes on a client since we cannot
-## 2) Reintroduce the text system when moving to a new biome
-## 3) Parallax needs to fade in
-## 4) Map visualization control
+## 1) Map visualization control

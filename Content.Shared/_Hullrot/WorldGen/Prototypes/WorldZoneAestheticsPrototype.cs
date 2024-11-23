@@ -18,7 +18,10 @@ public sealed partial class WorldZoneAestheticsPrototype : IPrototype
     [DataField("ambientMusic", customTypeSerializer: typeof(PrototypeIdSerializer<AmbientMusicPrototype>))]
     public string? AmbientMusic;
 
-    /// This needs to be tested in integration tests since parallax prototypes are not visible here
-    [DataField("parallax")]
+    // cannot be checked for serialization unfortunately - par for the course for client prototypes
+    [DataField]
     public string? Parallax;
+
+    [DataField]
+    public string? Name;
 }
