@@ -1,11 +1,11 @@
 using System.Numerics;
 using Content.Client._Hullrot.Text;
-using Content.Client.Audio;
 using Content.Client.Parallax;
 using Content.Shared._Hullrot.Worldgen;
 using Content.Shared._Hullrot.Worldgen.Prototypes;
 using Robust.Client.Player;
 using Robust.Shared.Prototypes;
+using Robust.Shared.Console;
 
 namespace Content.Client._Hullrot.WorldGen;
 
@@ -39,6 +39,8 @@ public sealed partial class WorldZoneAestheticsSystem : EntitySystem
     [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
     [Dependency] private readonly ParallaxSystem _parallaxSystem = default!;
     [Dependency] private readonly CinematicTextSystem _cineText = default!;
+    [Dependency] private readonly IConsoleHost _console = default!;
+
 
     public override void Update(float frameTime)
     {
@@ -128,5 +130,10 @@ public sealed partial class WorldZoneAestheticsSystem : EntitySystem
 
         arrayCoords = new Vector2i(indX, indY);
         return true;
+    }
+
+    public WorldZoneAestheticsPrototype[,]? GetCurrentZoneMap()
+    {
+        return _curZoneMap;
     }
 }
