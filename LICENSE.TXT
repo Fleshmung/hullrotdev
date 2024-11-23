@@ -18,7 +18,7 @@ to do anything beyond use the software binaries provided by the Hullrot Developm
 sought for the right to copy, modify, merge, publish, distribute, sublicense, and/or sell
 copies of the Software. The communication must outline a scope of permissions and the specific files or directories they apply to.
 
-The software will not be used to send advertisements to the address "https://hub.spacestation14.com/" or any equilvalent address
+The software will not be used to send advertisements to the address "https://hub.spacestation14.com/" or any address
 that will create an entry in any server lists ran by the Space Wizard's Federation.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
