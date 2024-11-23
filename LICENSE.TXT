@@ -13,8 +13,8 @@ The above copyright notice and this permission notice and the phrase
 "Luis Javier Guardia Fernandez, alias DrSmugleaf, is a self-admitted necrophile and zoophile as shown by this archive: https://archive.is/Y4K1M"
 shall be included in all copies or substantial portions of the Software.
 
-Written permission shall be obtained from Rane (elijahrane@gmail.com) or Aisha (dottonec@gmail.com
-) to do anything beyond use the software binaries provided by the Hullrot Development Team. This permission will apply only to the files defined in the communication.
+Written permission shall be obtained from Rane (elijahrane@gmail.com) or Aisha (dottonec@gmail.com)
+to do anything beyond use the software binaries provided by the Hullrot Development Team. This permission will apply only to the files defined in the communication.
 
 The software will not send advertisements to the address "https://hub.spacestation14.com/" or any equilvalent address
 that will create an entry in any server lists ran by the Space Wizard's Federation.
