@@ -1,4 +1,5 @@
 using System.Linq;
+using Content.Client._Hullrot.WorldGen;
 using Content.Client.Gameplay;
 using Content.Shared.Audio;
 using Content.Shared.CCVar;
@@ -31,6 +32,7 @@ public sealed partial class ContentAudioSystem
     [Dependency] private readonly IStateManager _state = default!;
     [Dependency] private readonly RulesSystem _rules = default!;
     [Dependency] private readonly SharedAudioSystem _audio = default!;
+    [Dependency] private readonly WorldZoneAestheticsSystem _zone = default!;
 
     private readonly TimeSpan _minAmbienceTime = TimeSpan.FromSeconds(30);
     private readonly TimeSpan _maxAmbienceTime = TimeSpan.FromSeconds(60);
@@ -48,6 +50,12 @@ public sealed partial class ContentAudioSystem
     /// If we find a better ambient music proto can we interrupt this one.
     /// </summary>
     private bool _interruptable;
+
+    // HULLROT: Let us force a reset
+    /// <summary>
+    /// If we're due for a reset.
+    /// </summary>
+    private bool _reset;
 
     /// <summary>
     /// Track what ambient sounds we've played. This is so they all get played an even
@@ -164,15 +172,16 @@ public sealed partial class ContentAudioSystem
             isDone = !audioComp.Playing;
         }
 
-        if (_interruptable)
+        if (_interruptable || _reset)
         {
             var player = _player.LocalSession?.AttachedEntity;
 
-            if (player == null || _musicProto == null || !_rules.IsTrue(player.Value, _proto.Index<RulesPrototype>(_musicProto.Rules)))
+            if (_reset || player == null || _musicProto == null || !_rules.IsTrue(player.Value, _proto.Index<RulesPrototype>(_musicProto.Rules)))
             {
                 FadeOut(_ambientMusicStream, duration: AmbientMusicFadeTime);
                 _musicProto = null;
                 _interruptable = false;
+                _reset = false;
                 isDone = true;
             }
         }
@@ -243,6 +252,14 @@ public sealed partial class ContentAudioSystem
         var ambiences = _proto.EnumeratePrototypes<AmbientMusicPrototype>().ToList();
         ambiences.Sort((x, y) => y.Priority.CompareTo(x.Priority));
 
+        #region Hullrot
+        // so rules have to be shared so we can't make something that checks a client value
+        // so I guess we have to special case zone ambiance.
+        if (_zone.CurAesth.AmbientMusic != null)
+            return _proto.Index<AmbientMusicPrototype>(_zone.CurAesth.AmbientMusic);
+
+        #endregion Hullrot
+
         foreach (var amb in ambiences)
         {
             if (!_rules.IsTrue(player.Value, _proto.Index<RulesPrototype>(amb.Rules)))
@@ -254,6 +271,13 @@ public sealed partial class ContentAudioSystem
         _sawmill.Warning($"Unable to find fallback ambience track");
         return null;
     }
+
+    #region Hullrot
+    public void ResetAmbiance()
+    {
+        _reset = true;
+    }
+    #endregion
 
     /// <summary>
     /// Fades out the current ambient music temporarily.

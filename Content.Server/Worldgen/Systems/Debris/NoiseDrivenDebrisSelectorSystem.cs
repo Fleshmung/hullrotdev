@@ -1,4 +1,5 @@
 ﻿using Content.Server.Worldgen.Components.Debris;
+using Content.Shared._Hullrot.Worldgen;
 using Robust.Server.GameObjects;
 using Robust.Shared.Random;
 
@@ -28,7 +29,7 @@ public sealed class NoiseDrivenDebrisSelectorSystem : BaseWorldSystem
     private void OnSelectDebrisKind(EntityUid uid, NoiseDrivenDebrisSelectorComponent component,
         ref TryGetPlaceableDebrisFeatureEvent args)
     {
-        var coords = WorldGen.WorldToChunkCoords(args.Coords.ToMapPos(EntityManager, _xformSys));
+        var coords = HullrotWorldGen.WorldToChunkCoords(args.Coords.ToMapPos(EntityManager, _xformSys));
         var prob = _index.Evaluate(uid, component.NoiseChannel, coords);
 
         if (prob is < 0 or > 1)

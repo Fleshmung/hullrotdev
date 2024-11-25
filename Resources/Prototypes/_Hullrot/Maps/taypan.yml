@@ -1,0 +1,5 @@
+- type: gameMap
+  id: Taypan
+  mapName: Taypan
+  mapPath: /Maps/Test/empty_nostation.yml
+  minPlayers: 0

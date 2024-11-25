@@ -1,5 +1,6 @@
 ﻿using Content.Server.Worldgen.Components.Carvers;
 using Content.Server.Worldgen.Systems.Debris;
+using Content.Shared._Hullrot.Worldgen;
 
 namespace Content.Server.Worldgen.Systems.Carvers;
 
@@ -20,7 +21,7 @@ public sealed class NoiseRangeCarverSystem : EntitySystem
     private void OnPrePlaceDebris(EntityUid uid, NoiseRangeCarverComponent component,
         ref PrePlaceDebrisFeatureEvent args)
     {
-        var coords = WorldGen.WorldToChunkCoords(args.Coords.ToMapPos(EntityManager, _transform));
+        var coords = HullrotWorldGen.WorldToChunkCoords(args.Coords.ToMapPos(EntityManager, _transform));
         var val = _index.Evaluate(uid, component.NoiseChannel, coords);
 
         foreach (var (low, high) in component.Ranges)

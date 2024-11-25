@@ -122,4 +122,26 @@ public sealed class ParallaxSystem : SharedParallaxSystem
             }
         }
     }
+
+    #region Hullrot
+    public string? Override = null;
+    public void SetParallaxOverride(string? parallax)
+    {
+        if (parallax == null && Override != null)
+            _parallax.UnloadParallax(Override);
+
+        Override = parallax;
+
+        if (parallax != null)
+            _parallax.LoadParallaxByName(parallax);
+    }
+
+    public ParallaxLayerPrepared[] GetParallaxLayersOrOverride(MapId id)
+    {
+        if (Override == null)
+            return GetParallaxLayers(id);
+
+        return _parallax.GetParallaxLayers(Override);
+    }
+    #endregion Hullrot
 }

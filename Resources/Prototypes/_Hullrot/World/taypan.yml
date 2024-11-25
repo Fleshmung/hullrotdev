@@ -1,0 +1,49 @@
+- type: worldgenConfig
+  id: Taypan
+  components:
+    - type: WorldController
+    - type: WorldZoneSetup
+      prototype: Taypan
+    - type: WorldPlacement
+      prototype: Taypan
+
+- type: worldPlacement
+  id: Taypan
+  maps:
+    - Fland
+    - Cog
+
+- type: worldZoneSetup
+  id: Taypan
+  inradius: 8
+  defaultZone: Asteroids
+  zones:
+    - Debug00
+
+- type: worldPlacementMap
+  id: Fland
+  mapPrototype: Fland
+  pos: 0, 0
+
+- type: worldPlacementMap
+  id: Cog
+  mapPrototype: Cog
+  pos: 4000, 4000
+
+- type: worldZone
+  id: Asteroids
+  biome: AsteroidsStandard
+
+- type: worldZone
+  id: Debug00
+  biome: AsteroidsStandard
+  aesthetics: DebugAesthetics
+  tiles:
+    - 0, 0
+
+- type: worldZoneAesthetics
+  id: DebugAesthetics
+  ambientMusic: Morgue
+  parallax: OriginStation
+  name: zone-name-debug
+  icon: /Textures/Tiles/deprecated.png

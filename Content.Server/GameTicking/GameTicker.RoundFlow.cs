@@ -11,6 +11,7 @@ using Content.Shared.GameTicking;
 using Content.Shared.Mind;
 using Content.Shared.Players;
 using Content.Shared.Preferences;
+using Content.Shared.Preferences.Loadouts;
 using JetBrains.Annotations;
 using Prometheus;
 using Robust.Server.Maps;
@@ -173,11 +174,13 @@ namespace Content.Server.GameTicking
 
             var gridIds = _map.LoadMap(targetMapId, ev.GameMap.MapPath.ToString(), ev.Options);
 
-            _metaData.SetEntityName(_mapManager.GetMapEntityId(targetMapId), map.MapName);
+            // Hullrot: Bugfix. We don't want to rename this if we're not overwriting the map
+            if (loadOpts.LoadMap == true)
+                _metaData.SetEntityName(_mapManager.GetMapEntityId(targetMapId), map.MapName);
 
             var gridUids = gridIds.ToList();
-            RaiseLocalEvent(new PostGameMapLoad(map, targetMapId, gridUids, stationName));
 
+            RaiseLocalEvent(new PostGameMapLoad(map, targetMapId, gridUids, stationName));
             return gridUids;
         }
 

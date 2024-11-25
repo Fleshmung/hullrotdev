@@ -1,18 +1,17 @@
-﻿using System.Diagnostics.Contracts;
+using Content.Shared._Hullrot.Worldgen.Prototypes;
+using System.Diagnostics.Contracts;
 using System.Numerics;
+using Robust.Shared.Serialization;
 
-namespace Content.Server.Worldgen;
+namespace Content.Shared._Hullrot.Worldgen;
 
-/// <summary>
-///     Contains a few world-generation related constants and static functions.
-/// </summary>
-public static class WorldGen
+public static class HullrotWorldGen
 {
     /// <summary>
     ///     The size of each chunk (isn't that self-explanatory.)
     ///     Be careful about how small you make this.
     /// </summary>
-    public const int ChunkSize = 128;
+    public const int ChunkSize = 1000;
 
     /// <summary>
     ///     Converts world coordinates to chunk coordinates.
@@ -68,5 +67,29 @@ public static class WorldGen
     {
         return inp * ChunkSize + Vector2i.One * (ChunkSize / 2);
     }
+
+    /// <summary>
+    /// We're joker mode due to serialization restrictions.
+    /// </summary>
+    /// <returns>A format that works to send arrays to client.</returns>
+    public static List<(WorldZoneAestheticsPrototype, int, int)> GetSerializableZoneList()
+    {
+        return new List<(WorldZoneAestheticsPrototype, int, int)>();
+    }
 }
 
+[Serializable, NetSerializable]
+public sealed class GiveMapZoneLayoutEvent : EntityEventArgs
+{
+    public readonly int X;
+    public readonly int Y;
+    //I'm joker mode
+    // System.NotSupportedException: Multi-dim arrays not supported: Content.Shared._Hullrot.Worldgen.Prototypes.WorldZoneAestheticsPrototype[,]
+    public readonly List<(WorldZoneAestheticsPrototype, int, int)>? Layout;
+    public GiveMapZoneLayoutEvent(int x, int y, List<(WorldZoneAestheticsPrototype, int, int)>? layout)
+    {
+        X = x;
+        Y = y;
+        Layout = layout;
+    }
+}
