@@ -67,31 +67,27 @@ public static class HullrotWorldGen
     {
         return inp * ChunkSize + Vector2i.One * (ChunkSize / 2);
     }
-}
 
-[Serializable, NetSerializable]
-public sealed class RequestMapZoneLayoutEvent : EntityEventArgs
-{
-    public readonly int? MapID;
-
-    public RequestMapZoneLayoutEvent(int? mapID)
+    /// <summary>
+    /// We're joker mode due to serialization restrictions.
+    /// </summary>
+    /// <returns>A format that works to send arrays to client.</returns>
+    public static List<(WorldZoneAestheticsPrototype, int, int)> GetSerializableZoneList()
     {
-        MapID = mapID;
+        return new List<(WorldZoneAestheticsPrototype, int, int)>();
     }
 }
 
 [Serializable, NetSerializable]
 public sealed class GiveMapZoneLayoutEvent : EntityEventArgs
 {
-    public readonly int MapID;
     public readonly int X;
     public readonly int Y;
     //I'm joker mode
     // System.NotSupportedException: Multi-dim arrays not supported: Content.Shared._Hullrot.Worldgen.Prototypes.WorldZoneAestheticsPrototype[,]
     public readonly List<(WorldZoneAestheticsPrototype, int, int)>? Layout;
-    public GiveMapZoneLayoutEvent(int mapID, int x, int y, List<(WorldZoneAestheticsPrototype, int, int)>? layout)
+    public GiveMapZoneLayoutEvent(int x, int y, List<(WorldZoneAestheticsPrototype, int, int)>? layout)
     {
-        MapID = mapID;
         X = x;
         Y = y;
         Layout = layout;

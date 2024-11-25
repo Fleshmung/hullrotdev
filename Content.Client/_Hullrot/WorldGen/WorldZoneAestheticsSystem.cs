@@ -14,11 +14,6 @@ namespace Content.Client._Hullrot.WorldGen;
 public sealed partial class WorldZoneAestheticsSystem : EntitySystem
 {
     /// <summary>
-    /// The map we were on, the last time we checked.
-    /// </summary>
-    private int _curMapId = -1;
-
-    /// <summary>
     /// The current map's zone layout, if any.
     /// </summary>
     private WorldZoneAestheticsPrototype[,]? _curZoneMap;
@@ -43,20 +38,13 @@ public sealed partial class WorldZoneAestheticsSystem : EntitySystem
     {
         base.Update(frameTime);
 
-        if (_awaitingUpdate)
+        if (_curZoneMap == null)
             return;
 
         var playerEnt = _playerManager.LocalEntity;
 
         if (playerEnt == null || !TryComp<TransformComponent>(playerEnt, out var playerXform))
             return;
-
-        if ((int)playerXform.MapID != _curMapId)
-        {
-            RaiseNetworkEvent(new RequestMapZoneLayoutEvent((int)playerXform.MapID));
-            _awaitingUpdate = true;
-            return;
-        }
 
         if (_curZoneMap == null)
             return;
@@ -84,9 +72,6 @@ public sealed partial class WorldZoneAestheticsSystem : EntitySystem
 
     private void OnLayoutReceived(GiveMapZoneLayoutEvent args, EntitySessionEventArgs msg)
     {
-        _curMapId = args.MapID;
-        _awaitingUpdate = false;
-
         if (args.Layout != null)
         {
             _curZoneMap = new WorldZoneAestheticsPrototype[args.X, args.Y];

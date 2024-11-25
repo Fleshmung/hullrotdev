@@ -3,6 +3,7 @@ using Content.Server.Worldgen.Prototypes;
 using Content.Server.Worldgen.Systems;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization.Manager;
+using Robust.Shared.Player;
 using Robust.Shared.Console;
 using System.Numerics;
 using Content.Shared._Hullrot.Worldgen;
@@ -27,8 +28,7 @@ public sealed partial class WorldZonesSystem : EntitySystem
         base.Initialize();
         SubscribeLocalEvent<WorldZoneSetupComponent, ComponentStartup>(OnStartup);
         SubscribeLocalEvent<WorldZoneSetupComponent, WorldChunkAddedEvent>(OnWorldChunkAdded);
-
-        SubscribeNetworkEvent<RequestMapZoneLayoutEvent>(OnRequestLayout);
+        SubscribeLocalEvent<PlayerAttachedEvent>(OnPlayerAttached);
 
         InitializeCommands();
     }
@@ -98,28 +98,30 @@ public sealed partial class WorldZonesSystem : EntitySystem
         ApplyZone(FetchZone(component, GetZoneProto(setupProto.OobZone ?? setupProto.DefaultZone), args.Coords), args.Chunk);
     }
 
-    private void OnRequestLayout(RequestMapZoneLayoutEvent ev, EntitySessionEventArgs args)
+    private void OnPlayerAttached(PlayerAttachedEvent attachedEvent)
     {
-        // Often the case during e.g. tests
-        if (ev.MapID == null)
-            return;
+        // This could be further optimized by tracking whether the client needs an update or not,
+        // by figuring out if they've disconnected since the last update. There might be something on session you can use,
+        // but I think this probably won't even be a blip in the total amount of data being sent to clients.
 
-        if (!_map.TryGetMap(new Robust.Shared.Map.MapId(ev.MapID.Value), out var map))
+        var query = EntityQueryEnumerator<WorldZoneSetupComponent>();
+        EntityUid? setupUid = null;
+        WorldZoneSetupComponent? setup = null;
+
+        while (query.MoveNext(out var uid, out var comp))
         {
-            RaiseNetworkEvent(new GiveMapZoneLayoutEvent(ev.MapID.Value, 0, 0, null), args.SenderSession);
-            return;
+            setupUid = uid;
+            setup = comp;
+            break;
         }
 
-        if (!TryComp<WorldZoneSetupComponent>(map, out var setup) || setup.ZoneArray == null)
-        {
-            RaiseNetworkEvent(new GiveMapZoneLayoutEvent(ev.MapID.Value, 0, 0, null), args.SenderSession);
+        if (setupUid == null || setup == null || setup.ZoneArray == null)
             return;
-        }
 
         var serverArray = setup.ZoneArray;
 
         // Can't serialize so going joker mode
-        var clientArray = new List<(WorldZoneAestheticsPrototype, int, int)>();
+        var clientArray = HullrotWorldGen.GetSerializableZoneList();
 
         for (int i = 0; i < serverArray.GetLength(0); i++)
         {
@@ -136,7 +138,7 @@ public sealed partial class WorldZonesSystem : EntitySystem
                 clientArray.Add((aesth, i, k));
             }
         }
-        RaiseNetworkEvent(new GiveMapZoneLayoutEvent(ev.MapID.Value, serverArray.GetLength(0), serverArray.GetLength(1), clientArray), args.SenderSession);
+        RaiseNetworkEvent(new GiveMapZoneLayoutEvent(serverArray.GetLength(0), serverArray.GetLength(1), clientArray), attachedEvent.Player);
     }
 
     private void ApplyZone(WorldZonePrototype zone, EntityUid chunk)
