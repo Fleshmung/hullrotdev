@@ -320,7 +320,9 @@ public sealed partial class ShuttleNavControl : BaseShuttleControl
         #region Hullrot
         // Draw radar line
         // First, figure out which angle to draw.
-        var angle = (_updateAccumulator / RadarUpdateInterval) * 360f;
+        Angle angle = _updateAccumulator / RadarUpdateInterval * Math.Tau;
+        var origin = ScalePosition(-new Vector2(Offset.X, -Offset.Y));
+        handle.DrawLine(origin, origin + angle.ToVec() * ScaledMinimapRadius * 1.42f, Color.Green.WithAlpha(0.1f));
 
         // Here's how the old north line worked.
         // protected void DrawNorthLine(DrawingHandleScreen handle, Angle angle)
