@@ -13,6 +13,7 @@ using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
 using Robust.Shared.Physics;
 using Robust.Shared.Physics.Components;
+using Robust.Shared.Timing;
 using Robust.Shared.Utility;
 
 namespace Content.Client.Shuttles.UI;
@@ -48,6 +49,32 @@ public sealed partial class ShuttleNavControl : BaseShuttleControl
     public Action<EntityCoordinates>? OnRadarClick;
 
     private List<Entity<MapGridComponent>> _grids = new();
+
+    #region Hullrot
+    // These 2 handle timing updates
+    private const float RadarUpdateInterval = 2f;
+    private float _updateAccumulator = 0f;
+
+    // We ask for the next update a little early so it's more responsive, but we always ignore it until it's time.
+    private bool _nextUpdateReady = false;
+
+    // private list CachedNextUpdate
+
+    // We receive our updates in the form of a list of positions, colors, and scale.
+    // private list CurrentUpdate
+
+    // As the scan line hits them, they become active blips. They're removed from the above list and added to this list of active blips.
+    // private list ActiveBlips
+
+    protected override void FrameUpdate(FrameEventArgs args)
+    {
+        base.FrameUpdate(args);
+        _updateAccumulator += args.DeltaSeconds;
+
+        if (_updateAccumulator >= RadarUpdateInterval)
+            _updateAccumulator = 0; // I'm not subtracting because frame updates can majorly lag in a way normal ones cannot.
+    }
+    #endregion Hullrot
 
     public ShuttleNavControl() : base(64f, 256f, 256f)
     {
@@ -290,6 +317,22 @@ public sealed partial class ShuttleNavControl : BaseShuttleControl
             }
         }
 
+        #region Hullrot
+        // Draw radar line
+        // First, figure out which angle to draw.
+        var angle = (_updateAccumulator / RadarUpdateInterval) * 360f;
+
+        // Here's how the old north line worked.
+        // protected void DrawNorthLine(DrawingHandleScreen handle, Angle angle)
+        // {
+        //     var origin = ScalePosition(-new Vector2(Offset.X, -Offset.Y));
+        //     var aExtent = (angle - Math.Tau / 4).ToVec() * ScaledMinimapRadius * 1.42f;
+        //     var lineColor = Color.Red.WithAlpha(0.1f);
+        //     handle.DrawLine(origin, origin + aExtent, lineColor);
+        // }
+
+        // Draw blips
+        #endregion
     }
 
     private void DrawDocks(DrawingHandleScreen handle, EntityUid uid, Matrix3x2 gridToView)
