@@ -322,7 +322,7 @@ public sealed partial class ShuttleNavControl : BaseShuttleControl
         // First, figure out which angle to draw.
         Angle angle = _updateAccumulator / RadarUpdateInterval * Math.Tau;
         var origin = ScalePosition(-new Vector2(Offset.X, -Offset.Y));
-        handle.DrawLine(origin, origin + angle.ToVec() * ScaledMinimapRadius * 1.42f, Color.Green.WithAlpha(0.1f));
+        handle.DrawLine(origin, origin + angle.ToVec() * ScaledMinimapRadius * 1.42f, Color.Orange.WithAlpha(0.1f));
 
         // Here's how the old north line worked.
         // protected void DrawNorthLine(DrawingHandleScreen handle, Angle angle)

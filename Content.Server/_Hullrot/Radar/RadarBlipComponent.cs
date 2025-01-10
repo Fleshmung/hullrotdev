@@ -1,11 +1,9 @@
-using Robust.Shared.GameStates;
-
 namespace Content.Server._Hullrot.Radar;
 
 /// <summary>
 /// These handle objects which should be represented by radar blips.
 /// </summary>
-[RegisterComponent, NetworkedComponent]
+[RegisterComponent]
 public sealed partial class RadarBlipComponent : Component
 {
     /// <summary>
