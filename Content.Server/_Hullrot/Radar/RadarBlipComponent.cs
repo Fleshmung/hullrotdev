@@ -22,5 +22,8 @@ public sealed partial class RadarBlipComponent : Component
     /// Whether this blip should be shown even when parented to a grid.
     /// </summary>
     [DataField]
-    public bool RequireNoGrid = true;
+    public bool RequireNoGrid = false;
+
+    [DataField]
+    public bool Enabled = true;
 }

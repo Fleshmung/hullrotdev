@@ -12,6 +12,13 @@ public sealed partial class RadarBlipsSystem : EntitySystem
 
     private void HandleReceiveBlips(GiveBlipsEvent ev, EntitySessionEventArgs args)
     {
+        Logger.Error("Received blips. Count: " + ev.Blips.Count);
+        foreach (var blip in ev.Blips)
+        {
+            Logger.Error("Pos: " + blip.Item1);
+            Logger.Error("Scale: " + blip.Item2);
+            Logger.Error("Color: " + blip.Item3);
+        }
     }
 
     public void RequestBlips(EntityUid console)
