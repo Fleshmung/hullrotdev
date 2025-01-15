@@ -56,18 +56,6 @@ public sealed partial class ShuttleNavControl : BaseShuttleControl
     // These 2 handle timing updates
     private const float RadarUpdateInterval = 2f;
     private float _updateAccumulator = 0f;
-
-    // We ask for the next update a little early so it's more responsive, but we always ignore it until it's time.
-    private bool _nextUpdateReady = false;
-
-    // private list CachedNextUpdate
-
-    // We receive our updates in the form of a list of positions, colors, and scale.
-    // private list CurrentUpdate
-
-    // As the scan line hits them, they become active blips. They're removed from the above list and added to this list of active blips.
-    // private list ActiveBlips
-
     protected override void FrameUpdate(FrameEventArgs args)
     {
         base.FrameUpdate(args);
@@ -328,20 +316,21 @@ public sealed partial class ShuttleNavControl : BaseShuttleControl
         #region Hullrot
         // Draw radar line
         // First, figure out which angle to draw.
-        Angle angle = _updateAccumulator / RadarUpdateInterval * Math.Tau;
+        var updateRatio = _updateAccumulator / RadarUpdateInterval;
+
+        Angle angle = updateRatio * Math.Tau;
         var origin = ScalePosition(-new Vector2(Offset.X, -Offset.Y));
         handle.DrawLine(origin, origin + angle.ToVec() * ScaledMinimapRadius * 1.42f, Color.Orange.WithAlpha(0.1f));
 
-        // Here's how the old north line worked.
-        // protected void DrawNorthLine(DrawingHandleScreen handle, Angle angle)
-        // {
-        //     var origin = ScalePosition(-new Vector2(Offset.X, -Offset.Y));
-        //     var aExtent = (angle - Math.Tau / 4).ToVec() * ScaledMinimapRadius * 1.42f;
-        //     var lineColor = Color.Red.WithAlpha(0.1f);
-        //     handle.DrawLine(origin, origin + aExtent, lineColor);
-        // }
-
         // Draw blips
+        var blips = _blips.GetCurrentBlips();
+
+        foreach (var blip in blips)
+        {
+            var blipPos = Vector2.Transform(blip.Item1, worldToShuttle * shuttleToView);
+            handle.DrawCircle(blipPos, blip.Item2 * 3f, blip.Item3.WithAlpha(0.8f));
+        }
+
         #endregion
     }
 

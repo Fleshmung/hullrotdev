@@ -1,9 +1,15 @@
+using System.Numerics;
 using Content.Shared._Hullrot.Radar;
+using Robust.Shared.Timing;
 
 namespace Content.Client._Hullrot.Radar;
 
 public sealed partial class RadarBlipsSystem : EntitySystem
 {
+    [Dependency] private readonly IGameTiming _timing = default!;
+    private TimeSpan _lastUpdatedTime;
+    private List<(Vector2, float, Color)> _blips = new();
+
     public override void Initialize()
     {
         base.Initialize();
@@ -19,6 +25,9 @@ public sealed partial class RadarBlipsSystem : EntitySystem
             Logger.Error("Scale: " + blip.Item2);
             Logger.Error("Color: " + blip.Item3);
         }
+
+        _blips = ev.Blips;
+        _lastUpdatedTime = _timing.CurTime;
     }
 
     public void RequestBlips(EntityUid console)
@@ -27,5 +36,13 @@ public sealed partial class RadarBlipsSystem : EntitySystem
 
         var ev = new RequestBlipsEvent(netConsole);
         RaiseNetworkEvent(ev);
+    }
+
+    public List<(Vector2, float, Color)> GetCurrentBlips()
+    {
+        if (_timing.CurTime.TotalSeconds - _lastUpdatedTime.TotalSeconds > 10)
+            return new List<(Vector2, float, Color)>();
+
+        return _blips;
     }
 }
