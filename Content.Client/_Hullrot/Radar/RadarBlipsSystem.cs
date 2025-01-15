@@ -12,7 +12,6 @@ public sealed partial class RadarBlipsSystem : EntitySystem
 
     private void HandleReceiveBlips(GiveBlipsEvent ev, EntitySessionEventArgs args)
     {
-
     }
 
     public void RequestBlips(EntityUid console)
