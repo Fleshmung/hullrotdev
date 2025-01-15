@@ -1,4 +1,5 @@
 using System.Numerics;
+using Content.Client._Hullrot.Radar;
 using Content.Shared.Shuttles.BUIStates;
 using Content.Shared.Shuttles.Components;
 using Content.Shared.Shuttles.Systems;
@@ -24,6 +25,7 @@ public sealed partial class ShuttleNavControl : BaseShuttleControl
     [Dependency] private readonly IMapManager _mapManager = default!;
     private readonly SharedShuttleSystem _shuttles;
     private readonly SharedTransformSystem _transform;
+    private readonly RadarBlipsSystem _blips;
 
     /// <summary>
     /// Used to transform all of the radar objects. Typically is a shuttle console parented to a grid.
@@ -72,7 +74,12 @@ public sealed partial class ShuttleNavControl : BaseShuttleControl
         _updateAccumulator += args.DeltaSeconds;
 
         if (_updateAccumulator >= RadarUpdateInterval)
+        {
             _updateAccumulator = 0; // I'm not subtracting because frame updates can majorly lag in a way normal ones cannot.
+
+            if (_consoleEntity != null)
+                _blips.RequestBlips((EntityUid)_consoleEntity);
+        }
     }
     #endregion Hullrot
 
@@ -81,6 +88,7 @@ public sealed partial class ShuttleNavControl : BaseShuttleControl
         RobustXamlLoader.Load(this);
         _shuttles = EntManager.System<SharedShuttleSystem>();
         _transform = EntManager.System<SharedTransformSystem>();
+        _blips = EntManager.System<RadarBlipsSystem>();
     }
 
     public void SetMatrix(EntityCoordinates? coordinates, Angle? angle)
