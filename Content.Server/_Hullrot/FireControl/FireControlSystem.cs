@@ -117,3 +117,11 @@ public sealed class FireControlSystem : EntitySystem
         return server.Controlled.Add(controllable);
     }
 }
+
+/// <summary>
+/// Server queries entities, they return their e.g. fire control tags, ammo status, etc
+/// </summary>
+public sealed class FireControllableStatusReportEvent : EntityEventArgs
+{
+    public List<(string type, string content)> StatusReports = new();
+}
