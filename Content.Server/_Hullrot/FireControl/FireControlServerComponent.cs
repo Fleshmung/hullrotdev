@@ -1,3 +1,6 @@
+/// Copyright Rane (elijahrane@gmail.com) 2025
+/// All rights reserved.
+
 namespace Content.Server._Hullrot.FireControl;
 
 /// My fire control system replaces the functionality of point cannons.
@@ -11,5 +14,6 @@ namespace Content.Server._Hullrot.FireControl;
 [RegisterComponent]
 public sealed partial class FireControlServerComponent : Component
 {
-
+    [ViewVariables]
+    public EntityUid? ConnectedGrid = null;
 }

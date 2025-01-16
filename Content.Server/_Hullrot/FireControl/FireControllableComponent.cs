@@ -4,7 +4,7 @@
 namespace Content.Server._Hullrot.FireControl;
 
 [RegisterComponent]
-public sealed partial class FireControlGridComponent : Component
+public sealed partial class FireControllableComponent : Component
 {
     [ViewVariables]
     public EntityUid? ControllingServer = null;

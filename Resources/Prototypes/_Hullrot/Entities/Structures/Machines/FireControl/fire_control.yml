@@ -1,0 +1,20 @@
+- type: entity
+  id: FireControlServer
+  parent: BaseMachinePowered
+  name: fire control server
+  description: Manages the remote operation of ship weapons.
+  components:
+  - type: Sprite
+    sprite: Structures/Machines/server.rsi
+    layers:
+      - state: server
+  - type: FireControlServer
+  - type: ApcPowerReceiver
+    powerLoad: 200
+  - type: ExtensionCableReceiver
+  - type: AmbientOnPowered
+  - type: AmbientSound
+    volume: -9
+    range: 5
+    sound:
+      path: /Audio/Ambience/Objects/server_fans.ogg
