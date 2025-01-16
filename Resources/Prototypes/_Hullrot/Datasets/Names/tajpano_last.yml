@@ -1,18 +1,22 @@
 - type: dataset
   id: names_tajpano_last
   values:
+  - Ali
   - Andersen
   - Angelov
   - Arpa
+  - Aslan
   - Baŭer
   - Berzina
   - Bojko
   - Bondarenko
   - Braŭn
   - Butkus
+  - Ĉelik
   - Ĉengis
   - Ĉoban
   - De Jong
+  - Demir
   - Dvorak
   - Fjederov
   - Fruĥt
@@ -28,11 +32,14 @@
   - Jansen
   - Ĵelko
   - Ĵiĵek
+  - Jilmaz
   - Ĵuivoda
   - Ĵuk
   - Ĵukov
+  - Kaja
   - Kazlaŭskiene
   - Keli
+  - Koĉ
   - Kohen
   - Korhonen
   - Kovaĉ
@@ -58,15 +65,18 @@
   - Nekrosov
   - Novak
   - Ozola
+  - Ozturk
   - Paŝkeviĉ
   - Pavlov
   - Peters
   - Petroviĉ
+  - Polat
   - Radu
   - Rebane
   - Rosi
   - Rubaĥ
   - Rusu
+  - Ŝahin
   - Ŝevĉenko
   - Sidorov
   - Simonov
