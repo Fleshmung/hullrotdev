@@ -18,3 +18,18 @@
     range: 5
     sound:
       path: /Audio/Ambience/Objects/server_fans.ogg
+
+- type: entity
+  id: FireControllableTest
+  parent: BaseMachinePowered
+  name: fire controllable
+  description: Helps Rane debug fire control
+  components:
+  - type: ApcPowerReceiver
+    powerLoad: 200
+  - type: ExtensionCableReceiver
+  - type: Sprite
+    sprite: Structures/Machines/server.rsi
+    layers:
+      - state: server
+  - type: FireControllable

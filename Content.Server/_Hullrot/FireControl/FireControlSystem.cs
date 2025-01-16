@@ -67,6 +67,23 @@ public sealed class FireControlSystem : EntitySystem
         }
     }
 
+    public void RefreshControllables(EntityUid grid, FireControlGridComponent? component = null)
+    {
+        if (!Resolve(grid, ref component))
+            return;
+
+        if (component.ControllingServer == null || !TryComp<FireControlServerComponent>(component.ControllingServer, out var server))
+            return;
+
+        var query = EntityQueryEnumerator<FireControllableComponent>();
+
+        while (query.MoveNext(out var controllable, out var controlComp))
+        {
+            if (_xform.GetGrid(controllable) == grid)
+                TryRegister(controllable, controlComp);
+        }
+    }
+
     private bool TryConnect(EntityUid server, FireControlServerComponent? component = null)
     {
         if (!Resolve(server, ref component))
@@ -84,6 +101,9 @@ public sealed class FireControlSystem : EntitySystem
 
         controlGrid.ControllingServer = server;
         component.ConnectedGrid = grid;
+
+        RefreshControllables((EntityUid)grid, controlGrid);
+
         return true;
     }
 
@@ -96,6 +116,7 @@ public sealed class FireControlSystem : EntitySystem
             return;
 
         controlComp.Controlled.Remove(controllable);
+        component.ControllingServer = null;
     }
 
     private bool TryRegister(EntityUid controllable, FireControllableComponent? component = null)
@@ -114,7 +135,17 @@ public sealed class FireControlSystem : EntitySystem
         if (controlGrid.ControllingServer == null || !TryComp<FireControlServerComponent>(controlGrid.ControllingServer, out var server))
             return false;
 
-        return server.Controlled.Add(controllable);
+
+        if (server.Controlled.Add(controllable))
+        {
+            component.ControllingServer = controlGrid.ControllingServer;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+
     }
 }
 
