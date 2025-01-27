@@ -9,21 +9,25 @@ namespace Content.Client._Hullrot.FireControl.UI;
 [GenerateTypedNameReferences]
 public sealed partial class FireControlWindow : FancyWindow
 {
+    public Action? OnServerRefresh;
     public FireControlWindow()
     {
         RobustXamlLoader.Load(this);
         Title = Loc.GetString("fire-control-debug");
+        RefreshButton.OnPressed += _ => OnServerRefresh?.Invoke();
     }
 
     public void UpdateStatus(FireControlConsoleComponent component)
     {
-        var label = new Label();
         if (component.Connected)
-            label.Text = Loc.GetString("fire-control-window-connected");
+        {
+            RefreshButton.Disabled = true;
+            ServerStatus.Text = Loc.GetString("fire-control-window-connected");
+        }
         else
-            label.Text = Loc.GetString("fire-control-window-disconnected");
-
-        RootBox.DisposeAllChildren();
-        RootBox.AddChild(label);
+        {
+            RefreshButton.Disabled = false;
+            ServerStatus.Text = Loc.GetString("fire-control-window-disconnected");
+        }
     }
 }

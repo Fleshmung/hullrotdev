@@ -13,3 +13,9 @@ public enum FireControlConsoleUiKey : byte
 {
     Key,
 }
+
+[Serializable, NetSerializable]
+public sealed class FireControlConsoleRefreshServerMessage : BoundUserInterfaceMessage
+{
+
+}

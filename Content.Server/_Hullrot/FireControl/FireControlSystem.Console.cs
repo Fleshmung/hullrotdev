@@ -9,6 +9,7 @@ public sealed partial class FireControlSystem : EntitySystem
     {
         SubscribeLocalEvent<FireControlConsoleComponent, PowerChangedEvent>(OnPowerChanged);
         SubscribeLocalEvent<FireControlConsoleComponent, ComponentShutdown>(OnComponentShutdown);
+        SubscribeLocalEvent<FireControlConsoleComponent, FireControlConsoleRefreshServerMessage>(OnRefreshServer);
     }
 
     private void OnPowerChanged(EntityUid uid, FireControlConsoleComponent component, PowerChangedEvent args)
@@ -22,6 +23,12 @@ public sealed partial class FireControlSystem : EntitySystem
     private void OnComponentShutdown(EntityUid uid, FireControlConsoleComponent component, ComponentShutdown args)
     {
         UnregisterConsole(uid, component);
+    }
+
+    private void OnRefreshServer(EntityUid uid, FireControlConsoleComponent component, FireControlConsoleRefreshServerMessage args)
+    {
+        Logger.Error("Refreshing server...");
+        TryRegisterConsole(uid, component);
     }
 
     private void UnregisterConsole(EntityUid console, FireControlConsoleComponent? component = null)

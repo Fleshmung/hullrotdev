@@ -4,7 +4,10 @@
             SetSize="600 600"
             MinSize="600 600">
     <BoxContainer Name="RootBox" Orientation="Vertical">
-            <Label Text="{Loc 'fire-control-window-disconnected'}"
-            StyleClasses="LabelKeyText" />
+            <BoxContainer Name="StatusBox" Orientation="Vertical">
+                <Label Name="ServerStatus" Text="{Loc 'fire-control-window-disconnected'}"
+                StyleClasses="LabelKeyText" />
+                <Button Name="RefreshButton" Access="Public" Text="{Loc admin-logs-refresh}" StyleClasses="ButtonSquare"/>
+            </BoxContainer>
     </BoxContainer>
 </controls:FancyWindow>

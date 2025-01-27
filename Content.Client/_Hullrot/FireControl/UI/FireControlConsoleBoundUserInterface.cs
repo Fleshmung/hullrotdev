@@ -22,5 +22,12 @@ public sealed class FireControlConsoleBoundUserInterface : BoundUserInterface
         _window = this.CreateWindow<FireControlWindow>();
         if (EntMan.TryGetComponent<FireControlConsoleComponent>(this.Owner, out var component))
             _window.UpdateStatus(component);
+
+        _window.OnServerRefresh += OnRefreshServer;
+    }
+
+    private void OnRefreshServer()
+    {
+        SendMessage(new FireControlConsoleRefreshServerMessage());
     }
 }
