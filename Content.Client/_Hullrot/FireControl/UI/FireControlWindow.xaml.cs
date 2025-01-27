@@ -13,13 +13,13 @@ public sealed partial class FireControlWindow : FancyWindow
     public FireControlWindow()
     {
         RobustXamlLoader.Load(this);
-        Title = Loc.GetString("fire-control-debug");
+        Title = Loc.GetString("fire-control-window-title");
         RefreshButton.OnPressed += _ => OnServerRefresh?.Invoke();
     }
 
-    public void UpdateStatus(FireControlConsoleComponent component)
+    public void UpdateStatus(FireControlConsoleBoundInterfaceState state)
     {
-        if (component.Connected)
+        if (state.Connected)
         {
             RefreshButton.Disabled = true;
             ServerStatus.Text = Loc.GetString("fire-control-window-connected");

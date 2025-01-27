@@ -9,11 +9,9 @@ namespace Content.Shared._Hullrot.FireControl;
 /// <summary>
 /// These are for the consoles that provide the user interface for fire control servers.
 /// </summary>
-[RegisterComponent, NetworkedComponent]
-[AutoGenerateComponentState]
+[RegisterComponent]
 public sealed partial class FireControlConsoleComponent : Component
 {
     [ViewVariables]
-    [AutoNetworkedField]
-    public bool Connected = false;
+    public EntityUid? ConnectedServer = null;
 }

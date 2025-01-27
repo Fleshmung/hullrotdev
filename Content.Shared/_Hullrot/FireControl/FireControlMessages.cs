@@ -14,10 +14,12 @@ public sealed class FireControlConsoleUpdateEvent : EntityEventArgs
 [Serializable, NetSerializable]
 public sealed class FireControlConsoleBoundInterfaceState : BoundUserInterfaceState
 {
+    public bool Connected;
     public FireControllableEntry[] FireControllables;
 
-    public FireControlConsoleBoundInterfaceState(FireControllableEntry[] fireControllables)
+    public FireControlConsoleBoundInterfaceState(bool connected, FireControllableEntry[] fireControllables)
     {
+        Connected = connected;
         FireControllables = fireControllables;
     }
 }

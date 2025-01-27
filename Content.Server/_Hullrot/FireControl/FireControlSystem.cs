@@ -67,6 +67,12 @@ public sealed partial class FireControlSystem : EntitySystem
             controlGrid.ControllingServer = null;
             RemComp<FireControlGridComponent>((EntityUid)component.ConnectedGrid);
         }
+
+        foreach (var controllable in(component.Controlled))
+            Unregister(controllable);
+
+        foreach (var console in component.Consoles)
+            UnregisterConsole(console);
     }
 
     public void RefreshControllables(EntityUid grid, FireControlGridComponent? component = null)

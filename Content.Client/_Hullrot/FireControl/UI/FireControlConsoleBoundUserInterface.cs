@@ -20,8 +20,6 @@ public sealed class FireControlConsoleBoundUserInterface : BoundUserInterface
     {
         base.Open();
         _window = this.CreateWindow<FireControlWindow>();
-        if (EntMan.TryGetComponent<FireControlConsoleComponent>(this.Owner, out var component))
-            _window.UpdateStatus(component);
 
         _window.OnServerRefresh += OnRefreshServer;
     }
@@ -29,5 +27,15 @@ public sealed class FireControlConsoleBoundUserInterface : BoundUserInterface
     private void OnRefreshServer()
     {
         SendMessage(new FireControlConsoleRefreshServerMessage());
+    }
+
+    protected override void UpdateState(BoundUserInterfaceState state)
+    {
+        base.UpdateState(state);
+
+        if (state is not FireControlConsoleBoundInterfaceState castState)
+            return;
+
+        _window?.UpdateStatus(castState);
     }
 }
