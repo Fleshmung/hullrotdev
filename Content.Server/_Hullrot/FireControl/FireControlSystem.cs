@@ -5,7 +5,7 @@ using Content.Shared.Power;
 
 namespace Content.Server._Hullrot.FireControl;
 
-public sealed class FireControlSystem : EntitySystem
+public sealed partial class FireControlSystem : EntitySystem
 {
     [Dependency] private readonly SharedTransformSystem _xform = default!;
 
@@ -24,6 +24,8 @@ public sealed class FireControlSystem : EntitySystem
 
         SubscribeLocalEvent<FireControllableComponent, PowerChangedEvent>(OnControllablePowerChanged);
         SubscribeLocalEvent<FireControllableComponent, ComponentShutdown>(OnControllableShutdown);
+
+        InitializeConsole();
     }
 
     private void OnPowerChanged(EntityUid uid, FireControlServerComponent component, PowerChangedEvent args)
@@ -124,21 +126,14 @@ public sealed class FireControlSystem : EntitySystem
         if (!Resolve(controllable, ref component))
             return false;
 
-        var grid = _xform.GetGrid(controllable);
+        var gridServer = TryGetGridServer(controllable);
 
-        if (grid == null)
+        if (gridServer.ServerComponent == null)
             return false;
 
-        if (!TryComp<FireControlGridComponent>(grid, out var controlGrid))
-            return false;
-
-        if (controlGrid.ControllingServer == null || !TryComp<FireControlServerComponent>(controlGrid.ControllingServer, out var server))
-            return false;
-
-
-        if (server.Controlled.Add(controllable))
+        if (gridServer.ServerComponent.Controlled.Add(controllable))
         {
-            component.ControllingServer = controlGrid.ControllingServer;
+            component.ControllingServer = gridServer.ServerUid;
             return true;
         }
         else
@@ -146,6 +141,22 @@ public sealed class FireControlSystem : EntitySystem
             return false;
         }
 
+    }
+
+    private (EntityUid? ServerUid, FireControlServerComponent? ServerComponent) TryGetGridServer(EntityUid uid)
+    {
+        var grid = _xform.GetGrid(uid);
+
+        if (grid == null)
+            return (null, null);
+
+        if (!TryComp<FireControlGridComponent>(grid, out var controlGrid))
+            return (null, null);
+
+        if (controlGrid.ControllingServer == null || !TryComp<FireControlServerComponent>(controlGrid.ControllingServer, out var server))
+            return (null, null);
+
+        return (controlGrid.ControllingServer, server);
     }
 }
 

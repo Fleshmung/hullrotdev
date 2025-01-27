@@ -1,3 +1,4 @@
+using Content.Shared._Hullrot.FireControl;
 using JetBrains.Annotations;
 using Robust.Client.GameObjects;
 using Robust.Client.UserInterface;
@@ -19,5 +20,7 @@ public sealed class FireControlConsoleBoundUserInterface : BoundUserInterface
     {
         base.Open();
         _window = this.CreateWindow<FireControlWindow>();
+        if (EntMan.TryGetComponent<FireControlConsoleComponent>(this.Owner, out var component))
+            _window.UpdateStatus(component);
     }
 }

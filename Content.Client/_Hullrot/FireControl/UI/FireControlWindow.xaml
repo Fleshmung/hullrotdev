@@ -3,6 +3,8 @@
             xmlns:controls="clr-namespace:Content.Client.UserInterface.Controls"
             SetSize="600 600"
             MinSize="600 600">
-    <BoxContainer Orientation="Vertical">
+    <BoxContainer Name="RootBox" Orientation="Vertical">
+            <Label Text="{Loc 'fire-control-window-disconnected'}"
+            StyleClasses="LabelKeyText" />
     </BoxContainer>
 </controls:FancyWindow>

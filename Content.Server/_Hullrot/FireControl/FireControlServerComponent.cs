@@ -11,4 +11,7 @@ public sealed partial class FireControlServerComponent : Component
 
     [ViewVariables]
     public HashSet<EntityUid> Controlled = new();
+
+    [ViewVariables]
+    public HashSet<EntityUid> Consoles = new();
 }
