@@ -53,9 +53,9 @@ public struct FireControllableEntry
     public string Name;
 
     public FireControllableEntry(NetEntity entity, NetCoordinates coordinates, string name)
-    {{
+    {
         NetEntity = entity;
         Coordinates = coordinates;
         Name = name;
-    }}
+    }
 }
