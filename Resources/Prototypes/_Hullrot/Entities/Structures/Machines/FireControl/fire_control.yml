@@ -19,6 +19,9 @@
     sound:
       path: /Audio/Ambience/Objects/server_fans.ogg
 
+
+## TODO: These are either debug or should be moved around a bit
+
 - type: entity
   id: FireControllableTest
   parent: BaseMachinePowered
@@ -33,3 +36,22 @@
     layers:
       - state: server
   - type: FireControllable
+
+- type: entity
+  parent: BaseComputer
+  id: ComputerFireControlConsole
+  name: fire control console
+  description: Interfaces with the fire control server to operate ship weapons.
+  components:
+  - type: FireControlConsole
+  - type: ActivatableUI
+    key: enum.FireControlConsoleUiKey.Key
+  - type: UserInterface
+    interfaces:
+        enum.FireControlConsoleUiKey.Key:
+          type: FireControlConsoleBoundUserInterface
+        enum.WiresUiKey.Key:
+          type: WiresBoundUserInterface
+  - type: RadarConsole
+  - type: WorldLoader
+    radius: 256

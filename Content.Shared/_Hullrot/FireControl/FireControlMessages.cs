@@ -6,3 +6,10 @@ namespace Content.Shared._Hullrot.FireControl;
 public sealed class FireControlConsoleUpdateEvent : EntityEventArgs
 {
 }
+
+
+[Serializable, NetSerializable]
+public enum FireControlConsoleUiKey : byte
+{
+    Key,
+}
