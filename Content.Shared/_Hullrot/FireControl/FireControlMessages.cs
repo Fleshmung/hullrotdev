@@ -1,5 +1,6 @@
 using Robust.Shared.Serialization;
 using Robust.Shared.Map;
+using Content.Shared.Shuttles.BUIStates;
 
 namespace Content.Shared._Hullrot.FireControl;
 
@@ -16,11 +17,13 @@ public sealed class FireControlConsoleBoundInterfaceState : BoundUserInterfaceSt
 {
     public bool Connected;
     public FireControllableEntry[] FireControllables;
+    public NavInterfaceState NavState;
 
-    public FireControlConsoleBoundInterfaceState(bool connected, FireControllableEntry[] fireControllables)
+    public FireControlConsoleBoundInterfaceState(bool connected, FireControllableEntry[] fireControllables, NavInterfaceState navState)
     {
         Connected = connected;
         FireControllables = fireControllables;
+        NavState = navState;
     }
 }
 

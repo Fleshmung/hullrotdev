@@ -1,5 +1,7 @@
+using Content.Server.Shuttles.Systems;
 using Content.Shared._Hullrot.FireControl;
 using Content.Shared.Power;
+using Content.Shared.Shuttles.BUIStates;
 using Robust.Server.GameObjects;
 
 namespace Content.Server._Hullrot.FireControl;
@@ -7,6 +9,7 @@ namespace Content.Server._Hullrot.FireControl;
 public sealed partial class FireControlSystem : EntitySystem
 {
     [Dependency] private readonly UserInterfaceSystem _ui = default!;
+    [Dependency] private readonly ShuttleConsoleSystem _shuttleConsoleSystem = default!;
     private void InitializeConsole()
     {
         SubscribeLocalEvent<FireControlConsoleComponent, PowerChangedEvent>(OnPowerChanged);
@@ -77,6 +80,8 @@ public sealed partial class FireControlSystem : EntitySystem
         if (!Resolve(uid, ref component))
             return;
 
+        NavInterfaceState navState = _shuttleConsoleSystem.GetNavState(uid, _shuttleConsoleSystem.GetAllDocks());
+
         List<FireControllableEntry> controllables = new();
         if (component.ConnectedServer != null && TryComp<FireControlServerComponent>(component.ConnectedServer, out var server))
         {
@@ -93,7 +98,7 @@ public sealed partial class FireControlSystem : EntitySystem
 
         var array = controllables.ToArray();
 
-        var state = new FireControlConsoleBoundInterfaceState(component.ConnectedServer != null, array);
+        var state = new FireControlConsoleBoundInterfaceState(component.ConnectedServer != null, array, navState);
         _ui.SetUiState(uid, FireControlConsoleUiKey.Key, state);
     }
 }
