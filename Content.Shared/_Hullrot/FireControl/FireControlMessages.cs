@@ -40,6 +40,17 @@ public sealed class FireControlConsoleRefreshServerMessage : BoundUserInterfaceM
 }
 
 [Serializable, NetSerializable]
+public sealed class FireControlConsoleFireMessage : BoundUserInterfaceMessage
+{
+    public NetCoordinates Coordinates;
+    public FireControlConsoleFireMessage(NetCoordinates coordinates)
+    {
+        Coordinates = coordinates;
+    }
+}
+
+
+[Serializable, NetSerializable]
 public struct FireControllableEntry
 {
     /// <summary>

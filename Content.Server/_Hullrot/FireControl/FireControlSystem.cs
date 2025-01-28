@@ -1,13 +1,18 @@
 /// Copyright Rane (elijahrane@gmail.com) 2025
 /// All rights reserved.
 
+using Content.Server.Weapons.Ranged.Systems;
 using Content.Shared.Power;
+using Content.Shared.Weapons.Ranged.Components;
+using Robust.Shared.Map;
 
 namespace Content.Server._Hullrot.FireControl;
 
 public sealed partial class FireControlSystem : EntitySystem
 {
     [Dependency] private readonly SharedTransformSystem _xform = default!;
+    [Dependency] private readonly GunSystem _gun = default!;
+
 
     /// My fire control system replaces the functionality of point cannons.
     /// I'll keep my notes here on how it works.
@@ -166,6 +171,20 @@ public sealed partial class FireControlSystem : EntitySystem
             return (null, null);
 
         return (controlGrid.ControllingServer, server);
+    }
+
+    public void FireWeapons(EntityUid uid, NetCoordinates coordinates, FireControlServerComponent? component = null)
+    {
+        if (!Resolve(uid, ref component))
+            return;
+
+        foreach (var controllable in component.Controlled)
+        {
+            if (!TryComp<GunComponent>(controllable, out var gun))
+                continue;
+
+            _gun.AttemptShoot(controllable, controllable, gun, GetCoordinates(coordinates));
+        }
     }
 }
 
