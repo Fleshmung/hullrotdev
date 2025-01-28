@@ -77,7 +77,23 @@ public sealed partial class FireControlSystem : EntitySystem
         if (!Resolve(uid, ref component))
             return;
 
-        var state = new FireControlConsoleBoundInterfaceState(component.ConnectedServer != null, new FireControllableEntry[0]);
+        List<FireControllableEntry> controllables = new();
+        if (component.ConnectedServer != null && TryComp<FireControlServerComponent>(component.ConnectedServer, out var server))
+        {
+            foreach (var controllable in server.Controlled)
+            {
+                var controlled = new FireControllableEntry();
+                controlled.NetEntity = EntityManager.GetNetEntity(controllable);
+                controlled.Coordinates = GetNetCoordinates(Transform(controllable).Coordinates);
+                controlled.Name = MetaData(controllable).EntityName;
+
+                controllables.Add(controlled);
+            }
+        }
+
+        var array = controllables.ToArray();
+
+        var state = new FireControlConsoleBoundInterfaceState(component.ConnectedServer != null, array);
         _ui.SetUiState(uid, FireControlConsoleUiKey.Key, state);
     }
 }

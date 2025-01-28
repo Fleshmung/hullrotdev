@@ -90,6 +90,9 @@ public sealed partial class FireControlSystem : EntitySystem
             if (_xform.GetGrid(controllable) == grid)
                 TryRegister(controllable, controlComp);
         }
+
+        foreach (var console in server.Consoles)
+            UpdateUi(console);
     }
 
     private bool TryConnect(EntityUid server, FireControlServerComponent? component = null)

@@ -21,13 +21,20 @@ public sealed partial class FireControlWindow : FancyWindow
     {
         if (state.Connected)
         {
-            RefreshButton.Disabled = true;
+            // RefreshButton.Disabled = true;
             ServerStatus.Text = Loc.GetString("fire-control-window-connected");
         }
         else
         {
             RefreshButton.Disabled = false;
             ServerStatus.Text = Loc.GetString("fire-control-window-disconnected");
+        }
+
+        foreach (var controllable in state.FireControllables)
+        {
+            var button = new Button();
+            button.Text = controllable.Name;
+            ControllablesBox.AddChild(button);
         }
     }
 }

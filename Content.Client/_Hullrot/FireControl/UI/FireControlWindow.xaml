@@ -8,6 +8,8 @@
                 <Label Name="ServerStatus" Text="{Loc 'fire-control-window-disconnected'}"
                 StyleClasses="LabelKeyText" />
                 <Button Name="RefreshButton" Access="Public" Text="{Loc admin-logs-refresh}" StyleClasses="ButtonSquare"/>
+                <BoxContainer Name="ControllablesBox" Orientation="Horizontal">
+                </BoxContainer>
             </BoxContainer>
     </BoxContainer>
 </controls:FancyWindow>
