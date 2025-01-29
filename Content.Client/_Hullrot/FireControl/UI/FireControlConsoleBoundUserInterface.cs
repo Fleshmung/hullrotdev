@@ -4,6 +4,7 @@ using Robust.Client.GameObjects;
 using Robust.Client.UserInterface;
 using Robust.Shared.Map;
 using Robust.Shared.GameObjects;
+using OpenToolkit.GraphicsLibraryFramework;
 
 namespace Content.Client._Hullrot.FireControl.UI;
 
@@ -31,6 +32,8 @@ public sealed class FireControlConsoleBoundUserInterface : BoundUserInterface
             var netCoords = EntMan.GetNetCoordinates(coords);
             SendFireMessage(netCoords);
         };
+
+        _window.Radar.DefaultCursorShape = Control.CursorShape.Crosshair;
     }
 
     private void OnRefreshServer()
