@@ -34,6 +34,7 @@ public sealed partial class FireControlWindow : FancyWindow
             ServerStatus.Text = Loc.GetString("fire-control-window-disconnected");
         }
 
+        ControllablesBox.DisposeAllChildren();
         foreach (var controllable in state.FireControllables)
         {
             var button = new Button();
