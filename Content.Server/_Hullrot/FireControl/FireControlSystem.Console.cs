@@ -42,7 +42,7 @@ public sealed partial class FireControlSystem : EntitySystem
         if (component.ConnectedServer == null || !TryComp<FireControlServerComponent>(component.ConnectedServer, out var server))
             return;
 
-        FireWeapons((EntityUid)component.ConnectedServer, args.Coordinates, server);
+        FireWeapons((EntityUid)component.ConnectedServer, args.Selected, args.Coordinates, server);
     }
 
     public void OnUIOpened(EntityUid uid, FireControlConsoleComponent component, BoundUIOpenedEvent args)

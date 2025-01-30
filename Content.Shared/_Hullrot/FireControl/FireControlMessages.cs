@@ -42,9 +42,11 @@ public sealed class FireControlConsoleRefreshServerMessage : BoundUserInterfaceM
 [Serializable, NetSerializable]
 public sealed class FireControlConsoleFireMessage : BoundUserInterfaceMessage
 {
+    public List<NetEntity> Selected;
     public NetCoordinates Coordinates;
-    public FireControlConsoleFireMessage(NetCoordinates coordinates)
+    public FireControlConsoleFireMessage(List<NetEntity> selected, NetCoordinates coordinates)
     {
+        Selected = selected;
         Coordinates = coordinates;
     }
 }

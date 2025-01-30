@@ -12,6 +12,10 @@ public sealed partial class FireControlWindow : FancyWindow
 {
     public ShuttleNavControl Radar => NavRadar;
     public Action? OnServerRefresh;
+
+    // fun fact: readonly dictionaries are still mutable
+    public readonly Dictionary<NetEntity, Button> WeaponsList = new();
+
     public FireControlWindow()
     {
         RobustXamlLoader.Load(this);
@@ -34,12 +38,15 @@ public sealed partial class FireControlWindow : FancyWindow
             ServerStatus.Text = Loc.GetString("fire-control-window-disconnected");
         }
 
+        WeaponsList.Clear();
         ControllablesBox.DisposeAllChildren();
         foreach (var controllable in state.FireControllables)
         {
             var button = new Button();
+            button.ToggleMode = true;
             button.Text = controllable.Name;
             ControllablesBox.AddChild(button);
+            WeaponsList.Add(controllable.NetEntity, button);
         }
     }
 }

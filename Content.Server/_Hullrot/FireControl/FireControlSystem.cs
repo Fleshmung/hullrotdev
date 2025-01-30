@@ -173,17 +173,21 @@ public sealed partial class FireControlSystem : EntitySystem
         return (controlGrid.ControllingServer, server);
     }
 
-    public void FireWeapons(EntityUid uid, NetCoordinates coordinates, FireControlServerComponent? component = null)
+    public void FireWeapons(EntityUid server, List<NetEntity> weapons, NetCoordinates coordinates, FireControlServerComponent? component = null)
     {
-        if (!Resolve(uid, ref component))
+        if (!Resolve(server, ref component))
             return;
 
-        foreach (var controllable in component.Controlled)
+        foreach (var weapon in weapons)
         {
-            if (!TryComp<GunComponent>(controllable, out var gun))
+            var localWeapon = GetEntity(weapon);
+            if (!component.Controlled.Contains(localWeapon))
                 continue;
 
-            _gun.AttemptShoot(controllable, controllable, gun, GetCoordinates(coordinates));
+            if (!TryComp<GunComponent>(localWeapon, out var gun))
+                continue;
+
+            _gun.AttemptShoot(localWeapon, localWeapon, gun, GetCoordinates(coordinates));
         }
     }
 }

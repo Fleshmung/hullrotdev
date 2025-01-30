@@ -3,8 +3,6 @@ using JetBrains.Annotations;
 using Robust.Client.GameObjects;
 using Robust.Client.UserInterface;
 using Robust.Shared.Map;
-using Robust.Shared.GameObjects;
-using OpenToolkit.GraphicsLibraryFramework;
 
 namespace Content.Client._Hullrot.FireControl.UI;
 
@@ -13,11 +11,9 @@ public sealed class FireControlConsoleBoundUserInterface : BoundUserInterface
 {
     [ViewVariables]
     private FireControlWindow? _window;
-    private TransformSystem _xform;
 
     public FireControlConsoleBoundUserInterface(EntityUid owner, Enum uiKey) : base(owner, uiKey)
     {
-        _xform = EntMan.EntitySysManager.GetEntitySystem<TransformSystem>();
     }
 
     protected override void Open()
@@ -43,7 +39,18 @@ public sealed class FireControlConsoleBoundUserInterface : BoundUserInterface
 
     private void SendFireMessage(NetCoordinates coordinates)
     {
-        SendMessage(new FireControlConsoleFireMessage(coordinates));
+        if (_window == null)
+            return;
+
+        var selected = new List<NetEntity>();
+        foreach (var button in _window.WeaponsList)
+        {
+            if (button.Value.Pressed)
+                selected.Add(button.Key);
+        }
+
+        if (selected.Count > 0)
+            SendMessage(new FireControlConsoleFireMessage(selected, coordinates));
     }
 
     protected override void UpdateState(BoundUserInterfaceState state)
