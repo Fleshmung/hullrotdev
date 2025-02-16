@@ -13,7 +13,7 @@ The software will not be used to send server advertisements to "https://hub.spac
 and the user will not use any means to create an entry on the default server list of the program distributed by "https://store.steampowered.com/app/1255460/Space_Station_14/",
 nor any server list operated by the Space Wizards Federation or Pieter-Jan Briers, Luis Javier Guardia Fernandez, Jesse Rougeau, Braden Nelson, or anyone acting on their behalf.
 
-The software cannot be used to host servers that, by US law, would be required to be restricted to individuals 18 or older due to e.g. the presense of cybersex.
+The software will not be used to host servers that, by US law, would be required to be restricted to individuals 18 or older due to e.g. the presense of cybersex.
 Servers that choose to be age restricted but are not legally required to are unaffected.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
