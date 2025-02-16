@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2024 Hullrot Development Team
+Copyright (c) 2025 Hullrot Development Team
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -9,13 +9,12 @@ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 copies of the Software, and to permit persons to whom the Software is
 furnished to do so, subject to the following conditions:
 
-Written permission shall be obtained from Rane (elijahrane@gmail.com) or Aisha (dottonec@gmail.com)
-to do anything beyond use the software binaries provided by the Hullrot Development Team. Explicit and seperate permissions must be
-sought for the right to copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software. The communication must outline a scope of permissions and the specific files or directories they apply to.
+The software will not be used to send server advertisements to "https://hub.spacestation14.io" or alternative addresses that will result in entries to "https://hub.spacestation14.io",
+and the user will not use any means to create an entry on the default server list of the program distributed by "https://store.steampowered.com/app/1255460/Space_Station_14/",
+nor any server list operated by the Space Wizards Federation or Pieter-Jan Briers, Luis Javier Guardia Fernandez, Jesse Rougeau, Braden Nelson, or anyone acting on their behalf.
 
-The software will not be used to send advertisements to the address "https://hub.spacestation14.com/" or any address
-that will create an entry in any server lists ran by the Space Wizard's Federation.
+The software cannot be used to host servers that, by US law, would be required to be restricted to individuals 18 or older due to e.g. the presense of cybersex.
+Servers that choose to be age restricted but are not legally required to are unaffected.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,

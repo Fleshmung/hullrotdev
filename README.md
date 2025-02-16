@@ -8,7 +8,7 @@
 
 ## License
 
-All code for the content repository is licensed under a modified version of [MIT](https://github.com/space-wizards/space-station-14/blob/master/LICENSE.TXT). Use of binaries we provide you is under no restriction. Use of the code is all subject to additional requirements, notably explicit permission for each right and the scope of files you wish to excercise the right(s) on.
+Most code for the content repository is licensed under a modified version of [MIT](https://github.com/Elijahrane/hullrot/blob/master/LICENSE.TXT).
 
 Most assets are licensed under [CC-BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/) unless stated otherwise. Assets have their license and the copyright in the metadata file. [Example](https://github.com/space-wizards/space-station-14/blob/master/Resources/Textures/Objects/Tools/crowbar.rsi/meta.json).
 
