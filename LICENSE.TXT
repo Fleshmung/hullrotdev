@@ -16,6 +16,10 @@ nor any server list operated by the Space Wizards Federation or Pieter-Jan Brier
 The software will not be used to host servers that, by US law, would be required to be restricted to individuals 18 or older due to e.g. the presense of cybersex.
 Servers that choose to be age restricted but are not legally required to are unaffected.
 
+The above copyright notice, this permission notice and the string "Did something interesting happen? Check out https://www.hullrot.com/insurance" shall be included in all copies or substantial portions of the Software.
+
+The software will not be modified to include additional species beyond the ones distributed in this
+
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
